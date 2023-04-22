@@ -1,11 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { EntityRepository } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { User } from 'src/entities/User.entity';
+import { Recipe } from 'src/entities/Recipe.entity';
 
 @Injectable()
 export class RecipeService {
-  create(createRecipeDto: CreateRecipeDto) {
-    return 'This action adds a new recipe';
+  private readonly recipeRepository: EntityRepository<Recipe>;
+  private readonly userRepository: EntityRepository<User>;
+
+  private readonly logger = new Logger(RecipeService.name);
+
+  constructor(
+    @InjectRepository(Recipe) recipeRepository: EntityRepository<Recipe>,
+    @InjectRepository(User) userRepository: EntityRepository<User>,
+  ) {
+    this.recipeRepository = recipeRepository;
+    this.userRepository = userRepository;
+  }
+
+  async create(createRecipeDto: CreateRecipeDto, userId: string) {
+    this.logger.debug('Finding author with id: ' + userId);
+    const author = await this.userRepository.findOne({ id: userId });
+
+    this.logger.debug('Finding author....');
+    this.logger.debug(author);
+
+    const recipe = new Recipe(
+      createRecipeDto.name,
+      createRecipeDto.description,
+      author,
+      [],
+      [],
+    );
+
+    await this.recipeRepository.persist(recipe).flush();
+
+    return recipe;
   }
 
   findAll() {

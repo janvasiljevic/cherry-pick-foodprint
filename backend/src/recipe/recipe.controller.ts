@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { RequestWithUAT } from 'src/common/interfaces/tokens.interface';
 
 @Controller('recipe')
 @ApiTags('Recipes')
@@ -19,8 +21,11 @@ export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
 
   @Post()
-  create(@Body() createRecipeDto: CreateRecipeDto) {
-    return this.recipeService.create(createRecipeDto);
+  create(
+    @Request() { user: at }: RequestWithUAT,
+    @Body() createRecipeDto: CreateRecipeDto,
+  ) {
+    return this.recipeService.create(createRecipeDto, at.userId);
   }
 
   @Get()
