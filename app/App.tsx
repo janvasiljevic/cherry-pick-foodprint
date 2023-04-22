@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 import { Login } from "./views/login/Login";
 import { Register } from "./views/login/Register";
+import { AppShell } from "./views/AppShell";
 import { NativeRouter, Route, Link, Routes } from "react-router-native";
 
 export default function App() {
@@ -9,9 +10,10 @@ export default function App() {
       {/* <Register />r */}
       <NativeRouter>
         <Routes>
-          <Route path="/" Component={Login} />
           <Route path="/login" Component={Login} />
           <Route path="/register" Component={Register} />
+          {/* <Route path="/" Component={Login} /> */}
+          <Route path="/" Component={AppShell} />
         </Routes>
       </NativeRouter>
 
