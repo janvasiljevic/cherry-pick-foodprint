@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -19,7 +20,7 @@ import { UserService } from './user.service';
 import { RequestWithUAT } from 'src/common/interfaces/tokens.interface';
 
 @ApiTags('User')
-@Controller()
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -55,5 +56,19 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.userService.update(user.userId, updateUserDto);
+  }
+
+  @SwaggerAuthDecorator
+  @Post('followers/:id')
+  @ApiOperation({ summary: 'Follow another user' })
+  follow(@Request() { user }: RequestWithUAT, @Param('id') id: string) {
+    return this.userService.follow(user.userId, id);
+  }
+
+  @Delete('followers/:id')
+  @SwaggerAuthDecorator
+  @ApiOperation({ summary: 'Follow another user' })
+  unfollow(@Request() { user }: RequestWithUAT, @Param('id') id: string) {
+    return this.userService.unfollow(user.userId, id);
   }
 }

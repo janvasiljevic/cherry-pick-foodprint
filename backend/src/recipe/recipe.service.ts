@@ -5,6 +5,7 @@ import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { User } from 'src/entities/User.entity';
 import { Recipe } from 'src/entities/Recipe.entity';
+import { TimelineGet } from './dto/timeline.dto';
 
 @Injectable()
 export class RecipeService {
@@ -41,19 +42,56 @@ export class RecipeService {
     return recipe;
   }
 
-  findAll() {
+  async timeline(userId: string, timelineGet: TimelineGet) {
+    const user = await this.userRepository.findOne(
+      { id: userId },
+      { populate: ['followers'] },
+    );
+
+    if (!user) throw new Error('User not found');
+
+    const followedIds = user.followers.getItems().map((user) => user.id);
+
+    const recipes = await this.recipeRepository.find(
+      {
+        author: { $in: followedIds },
+      },
+      {
+        limit: 10,
+        orderBy: { createdAt: 'DESC' },
+      },
+    );
+
+    return recipes;
+  }
+
+  // TODO - SEARCH
+  search() {
     return `This action returns all recipe`;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} recipe`;
+  async findOne(id: string): Promise<Recipe> {
+    const recipe = await this.recipeRepository.findOne(
+      { id },
+      { populate: ['author', 'comments'] },
+    );
+
+    if (!recipe) throw new Error('Recipe not found');
+
+    return recipe;
   }
 
   update(id: string, updateRecipeDto: UpdateRecipeDto) {
     return `This action updates a #${id} recipe`;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} recipe`;
+  async remove(id: string): Promise<Recipe> {
+    const recipe = await this.recipeRepository.findOne({ id });
+
+    if (!recipe) throw new Error('Recipe not found');
+
+    await this.recipeRepository.removeAndFlush(recipe);
+
+    return recipe;
   }
 }

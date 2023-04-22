@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@mikro-orm/nestjs';
@@ -76,6 +80,74 @@ export class UserService {
     wrap(user).assign(updateUserDto);
 
     await this.userRepository.persistAndFlush(user);
+
+    return user;
+  }
+
+  async follow(userId: string, toFollowUserId: string) {
+    if (userId === toFollowUserId) throw new Error('Cannot follow yourself');
+
+    // get current user
+    const user = await this.userRepository.findOne(
+      { id: userId },
+      { populate: ['followers'] },
+    );
+
+    if (!user) throw new NotFoundException("Couldn't find user");
+
+    // check if user is already following
+    const isFollowing = user.followers
+      .getItems()
+      .some((user) => user.id === toFollowUserId);
+
+    if (isFollowing) throw new BadRequestException('Already following');
+
+    // get user to follow
+    const toFollowUser = await this.userRepository.findOne({
+      id: toFollowUserId,
+    });
+
+    if (!toFollowUser)
+      throw new NotFoundException("Couldn't find user to follow");
+
+    // add user to follow to current user's followers
+    user.followers.add(toFollowUser);
+
+    this.userRepository.persistAndFlush(user);
+
+    return user;
+  }
+
+  async unfollow(userId: string, toUnfollow: string) {
+    if (userId === toUnfollow) throw new Error('Cannot unfollow yourself');
+
+    // get current user
+    const user = await this.userRepository.findOne(
+      { id: userId },
+      { populate: ['followers'] },
+    );
+
+    if (!user) throw new NotFoundException("Couldn't find user");
+
+    // check if user is already following
+    const isFollowing = user.followers
+      .getItems()
+      .some((user) => user.id === toUnfollow);
+
+    if (!isFollowing) throw new BadRequestException('Not following');
+
+    // get user to follow
+    const toFollowUser = await this.userRepository.findOne({
+      id: toUnfollow,
+    });
+
+    if (!toFollowUser)
+      throw new NotFoundException("Couldn't find user to un-follow");
+
+    // remove user to follow to current user's followers
+    user.followers.remove(toFollowUser);
+
+    this.userRepository.persistAndFlush(user);
 
     return user;
   }
