@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useLocation, useNavigate } from "react-router-native";
 
@@ -10,24 +10,30 @@ interface NavItemProps {
 export const NavItem = ({ icon, name }: NavItemProps) => {
   // auto track active route
   const location = useLocation();
-  const active = location.pathname == "/app" + name;
+  const active = location.pathname == "/app/" + name.toLowerCase();
 
   const navigate = useNavigate();
 
   const clickHandler = () => {
-    navigate("/app" + name);
+    navigate("/app/" + name.toLowerCase());
+    // console.log("navigating to: ", name.toLowerCase());
   };
 
   if (!active) {
+    // inactive
     return (
-      <View className=" px-6 py-2 flex  items-center">
-        <Icon name={icon} size={20} color="#cbd5e1" />
-        <Text className="text-gray-300 font-bold">{name}</Text>
-      </View>
+      <TouchableOpacity onPress={clickHandler}>
+        <View className=" px-4 py-2 flex  items-center border-b-2 border-white">
+          <Icon name={icon} size={20} color="#cbd5e1" />
+          <Text className="text-gray-300 font-bold">{name}</Text>
+        </View>
+      </TouchableOpacity>
     );
   }
+
+  // active
   return (
-    <View className="px-6 mx-2 py-2 flex items-center border-b-2 border-teal-500">
+    <View className="px-4 py-2 flex items-center border-b-2 border-teal-500">
       <Icon name={icon} size={20} color="#14b8a6" />
       <Text className="text-teal-400 font-bold">{name}</Text>
     </View>

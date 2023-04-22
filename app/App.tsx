@@ -12,8 +12,8 @@ export default function App() {
         <Routes>
           <Route path="/login" Component={Login} />
           <Route path="/register" Component={Register} />
-          {/* <Route path="/" Component={Login} /> */}
           <Route path="/" Component={AppShell} />
+          <Route path="/app/*" Component={AppShell} />
         </Routes>
       </NativeRouter>
 
