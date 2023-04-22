@@ -1,0 +1,3 @@
+# FoodPrint
+
+Our hackathon project:)

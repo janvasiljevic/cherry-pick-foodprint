@@ -148,6 +148,68 @@
           "nullable": false,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "food_group": {
+          "name": "food_group",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "food_item": {
+          "name": "food_item",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "carbon_footprint": {
+          "name": "carbon_footprint",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "carbon_footprint_uncertainty": {
+          "name": "carbon_footprint_uncertainty",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "low",
+            "high"
+          ],
+          "mappedType": "enum"
+        },
+        "water_footprint": {
+          "name": "water_footprint",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "water_footprint_uncertainty": {
+          "name": "water_footprint_uncertainty",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "low",
+            "high"
+          ],
+          "mappedType": "enum"
         }
       },
       "name": "source",
