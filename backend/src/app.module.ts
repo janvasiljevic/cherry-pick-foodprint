@@ -1,13 +1,13 @@
-import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import { RecipeModule } from './recipe/recipe.module';
+import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
-import { IngridientModule } from './ingridient/ingridient.module';
 import { DevModule } from './dev/dev.module';
+import { IngridientModule } from './ingridient/ingridient.module';
+import { RecipeModule } from './recipe/recipe.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [

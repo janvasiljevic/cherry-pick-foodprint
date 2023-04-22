@@ -8,14 +8,26 @@ import {
   Delete,
   Request,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { RequestWithUAT } from 'src/common/interfaces/tokens.interface';
 import { TimelineGet } from './dto/timeline.dto';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { Express } from 'express';
+import { IMAGE_PATH } from 'src/common/constants/contants';
+import path from 'path';
+@Controller('recipe')
 @Controller('recipe')
 @ApiTags('Recipes')
 @ApiBearerAuth('JWT-auth') //edit here
@@ -24,11 +36,25 @@ export class RecipeController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new recipe - WIP' })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: function (req, file, cb) {
+          cb(null, IMAGE_PATH);
+        },
+        filename: function (req, file, cb) {
+          cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
+        },
+      }),
+    }),
+  )
+  @ApiConsumes('multipart/form-data')
   create(
     @Request() { user: at }: RequestWithUAT,
     @Body() createRecipeDto: CreateRecipeDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.recipeService.create(createRecipeDto, at.userId);
+    return this.recipeService.create(createRecipeDto, at.userId, file.filename);
   }
 
   @Get('timeline')

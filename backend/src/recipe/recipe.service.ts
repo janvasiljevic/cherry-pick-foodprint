@@ -6,35 +6,48 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { User } from 'src/entities/User.entity';
 import { Recipe } from 'src/entities/Recipe.entity';
 import { TimelineGet } from './dto/timeline.dto';
+import { Ingridient } from 'src/entities/Ingridient.entity';
 
 @Injectable()
 export class RecipeService {
   private readonly recipeRepository: EntityRepository<Recipe>;
   private readonly userRepository: EntityRepository<User>;
-
+  private readonly ingridientRepository: EntityRepository<Ingridient>;
   private readonly logger = new Logger(RecipeService.name);
 
   constructor(
     @InjectRepository(Recipe) recipeRepository: EntityRepository<Recipe>,
     @InjectRepository(User) userRepository: EntityRepository<User>,
+    @InjectRepository(Ingridient)
+    ingridientRepository: EntityRepository<Ingridient>,
   ) {
     this.recipeRepository = recipeRepository;
     this.userRepository = userRepository;
+    this.ingridientRepository = ingridientRepository;
   }
 
-  async create(createRecipeDto: CreateRecipeDto, userId: string) {
-    this.logger.debug('Finding author with id: ' + userId);
+  async create(
+    createRecipeDto: CreateRecipeDto,
+    userId: string,
+    fileName: string,
+  ) {
     const author = await this.userRepository.findOne({ id: userId });
 
-    this.logger.debug('Finding author....');
-    this.logger.debug(author);
+    if (!author) throw new Error('User not found');
+
+    const ingridients: Ingridient[] = await Promise.all(
+      createRecipeDto.ingredientIds.map(async (id) => {
+        return await this.ingridientRepository.findOne({ id });
+      }),
+    );
 
     const recipe = new Recipe(
       createRecipeDto.name,
       createRecipeDto.description,
       author,
-      [],
-      [],
+      ingridients,
+      [], // tags
+      '/public/' + fileName,
     );
 
     await this.recipeRepository.persist(recipe).flush();

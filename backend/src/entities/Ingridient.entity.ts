@@ -12,10 +12,10 @@ export class Ingridient extends CustomBaseEntity {
   name!: string;
 
   @Property()
-  weight: number;
+  weight!: number;
 
   @ManyToOne()
-  source?: Source;
+  source?: Source; // not neccessary that ingridient has a source
 
   @Property({ nullable: true })
   calculated_carbon_footprint?: number;

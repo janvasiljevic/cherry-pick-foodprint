@@ -3,15 +3,17 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { MikroOrmExceptionHandler } from './common/filters/mikro-orm-exception.filter';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const config = new DocumentBuilder()
     .setTitle('Cherry Pick - FoodPrint ')
     .setDescription('FoodPrint API description')
     .setVersion('1.0')
-    .addTag('foodprint')
+    .setBasePath('api')
     .addBearerAuth(
       {
         type: 'http',
@@ -31,7 +33,9 @@ async function bootstrap() {
     }),
   );
 
+  app.setGlobalPrefix('api');
   app.useGlobalFilters(new MikroOrmExceptionHandler());
+  app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/public' });
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

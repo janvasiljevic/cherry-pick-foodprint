@@ -265,6 +265,15 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "image_url": {
+          "name": "image_url",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "author_id": {
           "name": "author_id",
           "type": "varchar(255)",
