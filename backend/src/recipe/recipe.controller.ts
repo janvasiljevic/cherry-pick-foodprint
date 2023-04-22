@@ -15,7 +15,6 @@ import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RequestWithUAT } from 'src/common/interfaces/tokens.interface';
 import { TimelineGet } from './dto/timeline.dto';
-import { Recipe } from 'src/entities/Recipe.entity';
 
 @Controller('recipe')
 @ApiTags('Recipes')
@@ -59,9 +58,15 @@ export class RecipeController {
     return this.recipeService.update(id, updateRecipeDto);
   }
 
-  @Delete(':id')
-  @ApiOperation({ summary: 'Delete a recipe by id' })
-  remove(@Param('id') id: string) {
-    return this.recipeService.remove(id);
+  @Post('bookmark/:id')
+  @ApiOperation({ summary: 'Bookmark a recipe by id' })
+  bookmark(@Request() { user }: RequestWithUAT, @Param('id') id: string) {
+    return this.recipeService.bookmark(user.userId, id);
+  }
+
+  @Delete('bookmark/:id')
+  @ApiOperation({ summary: 'Unbookmark a recipe by id' })
+  unbookmark(@Request() { user }: RequestWithUAT, @Param('id') id: string) {
+    return this.recipeService.unbookmark(user.userId, id);
   }
 }

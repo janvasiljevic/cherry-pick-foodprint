@@ -6,6 +6,8 @@ import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { RecipeModule } from './recipe/recipe.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
+import { IngridientModule } from './ingridient/ingridient.module';
+import { DevModule } from './dev/dev.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
     AuthModule,
     UserModule,
     RecipeModule,
+    IngridientModule,
+    DevModule,
   ],
   controllers: [],
   providers: [

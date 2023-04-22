@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { EntityRepository } from '@mikro-orm/core';
@@ -91,6 +91,46 @@ export class RecipeService {
     if (!recipe) throw new Error('Recipe not found');
 
     await this.recipeRepository.removeAndFlush(recipe);
+
+    return recipe;
+  }
+
+  async bookmark(userId: string, recipeId: string) {
+    const user = await this.userRepository.findOne(
+      { id: userId },
+      { populate: ['bookmarks'] },
+    );
+    const recipe = await this.recipeRepository.findOne({ id: recipeId });
+
+    if (!user) throw new Error('User not found');
+    if (!recipe) throw new Error('Recipe not found');
+
+    if (user.bookmarks.contains(recipe))
+      throw new BadRequestException('Recipe already bookmarked');
+
+    user.bookmarks.add(recipe);
+
+    await this.userRepository.persist(user).flush();
+
+    return recipe;
+  }
+
+  async unbookmark(userId: string, recipeId: string) {
+    const user = await this.userRepository.findOne(
+      { id: userId },
+      { populate: ['bookmarks'] },
+    );
+    const recipe = await this.recipeRepository.findOne({ id: recipeId });
+
+    if (!user) throw new Error('User not found');
+    if (!recipe) throw new Error('Recipe not found');
+
+    if (!user.bookmarks.contains(recipe))
+      throw new BadRequestException('Recipe not bookmarked');
+
+    user.bookmarks.remove(recipe);
+
+    await this.userRepository.persist(user).flush();
 
     return recipe;
   }

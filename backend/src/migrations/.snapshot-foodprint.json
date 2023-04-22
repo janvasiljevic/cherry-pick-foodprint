@@ -55,12 +55,12 @@
         },
         "carbon_footprint": {
           "name": "carbon_footprint",
-          "type": "int",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
+          "nullable": true,
+          "mappedType": "float"
         },
         "carbon_footprint_uncertainty": {
           "name": "carbon_footprint_uncertainty",
@@ -68,21 +68,21 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "enumItems": [
-            "low",
-            "high"
+            "L",
+            "H"
           ],
           "mappedType": "enum"
         },
         "water_footprint": {
           "name": "water_footprint",
-          "type": "int",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
+          "nullable": true,
+          "mappedType": "float"
         },
         "water_footprint_uncertainty": {
           "name": "water_footprint_uncertainty",
@@ -90,10 +90,10 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "enumItems": [
-            "low",
-            "high"
+            "L",
+            "H"
           ],
           "mappedType": "enum"
         }
