@@ -16,7 +16,7 @@ export class UserService {
     const saltOrRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltOrRounds);
 
-    const user = new User(username, hashedPassword);
+    const user = new User(username, hashedPassword, 'todo', 'todo', ['todo']);
 
     await this.userRepository.persist(user).flush();
 

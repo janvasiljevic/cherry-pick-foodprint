@@ -1,5 +1,6 @@
-import { Entity, Enum, Property } from '@mikro-orm/core';
+import { Collection, Entity, Enum, OneToMany, Property } from '@mikro-orm/core';
 import { CustomBaseEntity } from './CustomBaseEntity';
+import { Ingridient } from './Ingridient.entity';
 
 @Entity()
 export class Source extends CustomBaseEntity {
@@ -20,6 +21,9 @@ export class Source extends CustomBaseEntity {
 
   @Enum()
   water_footprint_uncertainty: Uncertainty;
+
+  @OneToMany(() => Ingridient, (ingridient) => ingridient.source)
+  ingridients = new Collection<Ingridient>(this);
 }
 
 export enum Uncertainty {
