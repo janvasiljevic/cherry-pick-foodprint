@@ -1,12 +1,77 @@
 {
   "components": {
     "schemas": {
+      "Collection": {
+        "properties": {},
+        "type": "object"
+      },
+      "CreateIngridientDto": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "sourceId": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "weight",
+          "name"
+        ],
+        "type": "object"
+      },
+      "CreateRecipeDto": {
+        "properties": {
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "file": {
+            "format": "binary",
+            "type": "string"
+          },
+          "ingredientIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "name": {
+            "minLength": 3,
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "name",
+          "description",
+          "ingredientIds"
+        ],
+        "type": "object"
+      },
       "CreateUserDto": {
         "properties": {
+          "firstName": {
+            "minLength": 2,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 2,
+            "type": "string"
+          },
           "password": {
             "example": "12345678",
             "minLength": 8,
             "type": "string"
+          },
+          "socials": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
           },
           "username": {
             "example": "test",
@@ -16,28 +81,58 @@
         },
         "required": [
           "username",
-          "password"
+          "password",
+          "firstName",
+          "lastName",
+          "socials"
+        ],
+        "type": "object"
+      },
+      "Ingridient": {
+        "properties": {
+          "calculated_carbon_footprint": {
+            "type": "number"
+          },
+          "calculated_water_footprint": {
+            "type": "number"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "recipe": {
+            "$ref": "#/components/schemas/Recipe"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "recipe",
+          "name",
+          "weight"
         ],
         "type": "object"
       },
       "LoginDto": {
         "properties": {
           "password": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "username",
-          "password"
-        ],
-        "type": "object"
-      },
-      "UpdateUserDto": {
-        "properties": {
-          "password": {
             "example": "12345678",
             "minLength": 8,
             "type": "string"
@@ -48,7 +143,272 @@
             "type": "string"
           }
         },
+        "required": [
+          "username",
+          "password"
+        ],
         "type": "object"
+      },
+      "Recipe": {
+        "properties": {
+          "author": {
+            "$ref": "#/components/schemas/User"
+          },
+          "bookmarkedBy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Collection"
+              }
+            ],
+            "default": []
+          },
+          "calculate_carbon_footprint": {
+            "type": "number"
+          },
+          "calculate_water_footprint": {
+            "type": "number"
+          },
+          "comments": {
+            "default": [],
+            "type": "object"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "foodTags": {
+            "default": [],
+            "items": {
+              "enum": [
+                "High protein",
+                "Meat",
+                "Fish",
+                "Low glycemic index",
+                "Rich in fiber"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string"
+          },
+          "ingridients": {
+            "default": [],
+            "type": "object"
+          },
+          "name": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "name",
+          "description",
+          "image_url",
+          "author",
+          "bookmarkedBy",
+          "ingridients",
+          "foodTags",
+          "comments"
+        ],
+        "type": "object"
+      },
+      "Source": {
+        "properties": {
+          "carbon_footprint": {
+            "type": "number"
+          },
+          "carbon_footprint_uncertainty": {
+            "enum": [
+              "L",
+              "H"
+            ],
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "food_group": {
+            "type": "string"
+          },
+          "food_item": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "ingridients": {
+            "default": [],
+            "type": "object"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "water_footprint": {
+            "type": "number"
+          },
+          "water_footprint_uncertainty": {
+            "enum": [
+              "L",
+              "H"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "food_group",
+          "food_item",
+          "ingridients"
+        ],
+        "type": "object"
+      },
+      "UpdateIngridientDto": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "weight",
+          "name"
+        ],
+        "type": "object"
+      },
+      "UpdateRecipeDto": {
+        "properties": {
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "file": {
+            "format": "binary",
+            "type": "string"
+          },
+          "ingredientIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "name": {
+            "minLength": 3,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateUserDto": {
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "socials": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "User": {
+        "properties": {
+          "bookmarks": {
+            "default": [],
+            "type": "object"
+          },
+          "comments": {
+            "default": [],
+            "type": "object"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "followers": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Collection"
+              }
+            ],
+            "default": []
+          },
+          "hashedPassword": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "recipes": {
+            "default": [],
+            "type": "object"
+          },
+          "socials": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "username",
+          "hashedPassword",
+          "comments",
+          "recipes",
+          "bookmarks",
+          "followers"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "JWT-auth": {
+        "bearerFormat": "JWT",
+        "description": "Enter JWT token",
+        "in": "header",
+        "name": "JWT",
+        "scheme": "bearer",
+        "type": "http"
       }
     }
   },
@@ -60,7 +420,7 @@
   },
   "openapi": "3.0.0",
   "paths": {
-    "/auth/login": {
+    "/api/auth/login": {
       "post": {
         "operationId": "AuthController_login",
         "parameters": [],
@@ -85,9 +445,229 @@
         ]
       }
     },
-    "/user": {
+    "/api/dev/seed": {
+      "post": {
+        "operationId": "DevController_seed",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "controller"
+        ]
+      }
+    },
+    "/api/ingridient": {
+      "post": {
+        "operationId": "IngridientController_create",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIngridientDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ingridient"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": [
+          "Ingridients"
+        ]
+      }
+    },
+    "/api/ingridient/{id}": {
+      "delete": {
+        "operationId": "IngridientController_remove",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": [
+          "Ingridients"
+        ]
+      },
+      "patch": {
+        "operationId": "IngridientController_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIngridientDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": [
+          "Ingridients"
+        ]
+      }
+    },
+    "/api/recipe": {
+      "post": {
+        "operationId": "RecipeController_create",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRecipeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Create a new recipe - WIP",
+        "tags": [
+          "Recipes"
+        ]
+      }
+    },
+    "/api/recipe/bookmark/{id}": {
+      "delete": {
+        "operationId": "RecipeController_unbookmark",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Unbookmark a recipe by id",
+        "tags": [
+          "Recipes"
+        ]
+      },
+      "post": {
+        "operationId": "RecipeController_bookmark",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Bookmark a recipe by id",
+        "tags": [
+          "Recipes"
+        ]
+      }
+    },
+    "/api/recipe/search": {
       "get": {
-        "operationId": "UserController_findAll",
+        "operationId": "RecipeController_search",
         "parameters": [],
         "responses": {
           "200": {
@@ -101,6 +681,194 @@
             "description": ""
           }
         },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "This will be the fancy AI Search - TODO",
+        "tags": [
+          "Recipes"
+        ]
+      }
+    },
+    "/api/recipe/timeline": {
+      "get": {
+        "operationId": "RecipeController_timeline",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get timeline - WIP",
+        "tags": [
+          "Recipes"
+        ]
+      }
+    },
+    "/api/recipe/{id}": {
+      "get": {
+        "operationId": "RecipeController_findOne",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Get a recipe by id",
+        "tags": [
+          "Recipes"
+        ]
+      },
+      "patch": {
+        "operationId": "RecipeController_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRecipeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update a recipe by id - WIP",
+        "tags": [
+          "Recipes"
+        ]
+      }
+    },
+    "/api/source/search": {
+      "get": {
+        "operationId": "SourceController_search",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Search for sources",
+        "tags": [
+          "Source"
+        ]
+      }
+    },
+    "/api/user": {
+      "get": {
+        "operationId": "UserController_findAll",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Find all users or by search term",
         "tags": [
           "User"
         ]
@@ -130,9 +898,9 @@
         ]
       }
     },
-    "/user/{id}": {
+    "/api/user/followers/{id}": {
       "delete": {
-        "operationId": "UserController_remove",
+        "operationId": "UserController_unfollow",
         "parameters": [
           {
             "in": "path",
@@ -148,17 +916,59 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "object"
                 }
               }
             },
             "description": ""
           }
         },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Follow another user",
         "tags": [
           "User"
         ]
       },
+      "post": {
+        "operationId": "UserController_follow",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Follow another user",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/user/{id}": {
       "get": {
         "operationId": "UserController_findOne",
         "parameters": [
@@ -176,29 +986,26 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "object"
                 }
               }
             },
             "description": ""
           }
         },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Find a given user by id",
         "tags": [
           "User"
         ]
       },
       "patch": {
         "operationId": "UserController_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -214,13 +1021,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "object"
                 }
               }
             },
             "description": ""
           }
         },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Update your profile",
         "tags": [
           "User"
         ]
@@ -228,10 +1041,5 @@
     }
   },
   "servers": [],
-  "tags": [
-    {
-      "description": "",
-      "name": "foodprint"
-    }
-  ]
+  "tags": []
 }
