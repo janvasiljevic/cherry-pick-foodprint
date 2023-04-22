@@ -5,7 +5,6 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   Property,
 } from '@mikro-orm/core';
 import { CustomBaseEntity } from './CustomBaseEntity';
@@ -43,6 +42,22 @@ export class Recipe extends CustomBaseEntity {
   // Comments under the post made by other users
   @OneToMany(() => Comment, (comment) => comment.recipe)
   comments = new Collection<Comment>(this);
+
+  constructor(
+    name: string,
+    description: string,
+    author: User,
+    ingridients: Ingridient[],
+    foodTags: FoodTag[],
+  ) {
+    super();
+
+    this.name = name;
+    this.description = description;
+    this.author = author;
+    this.ingridients = new Collection<Ingridient>(this, ingridients);
+    this.foodTags = foodTags;
+  }
 }
 
 export enum FoodTag {
