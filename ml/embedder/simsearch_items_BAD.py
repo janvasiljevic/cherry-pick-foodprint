@@ -6,11 +6,11 @@ client = wv.Client(
 
 )
 
-nearText = {"concepts": ["healthy chicken pasta with tomta sauce. Cripsy chicken with a creamy sauce, high protein and low carb.t"]}
+nearText = {"concepts": ["sunflower oil"]}
 
 result = (
     client.query
-    .get("Recipe", ["name", "description"])
+    .get("SourceFood", ["food_item", "co2_footprint_kg"])
     .with_near_text(nearText)
     .with_limit(10)
     .do()
