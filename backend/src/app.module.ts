@@ -3,6 +3,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
+import { RecipeModule } from './recipe/recipe.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
     }),
     AuthModule,
     UserModule,
+    RecipeModule,
   ],
   controllers: [],
   providers: [],

@@ -1,17 +1,32 @@
-import { Entity } from '@mikro-orm/core';
+import { Collection, Entity, Enum, OneToMany, Property } from '@mikro-orm/core';
 import { CustomBaseEntity } from './CustomBaseEntity';
-// 'FOOD COMMODITY GROUP', 'Food commodity ITEM',
-//        'Carbon Footprint kg CO2eq/kg or l of food ITEM',
-//        'CO2 Footprint Uncertainty', 'Suggested CF value',
-//        'Food commodity TYPOLOGY',
-//        'Carbon Footprint g CO2eq/g o cc of food TYPOLOGY',
-//        'Food commodity sub-TYPOLOGY',
-//        'Carbon Footprint g CO2eq/g o cc of food sub-TYPOLOGY',
-//        'Water Footprint liters water/kg o liter of food ITEM',
-//        'Water Footprint cc water/g o cc of food sub-TYPOLOGY',
-//        'Water Footprint Uncertainty'
-// @Entity()
-// export class Source extends CustomBaseEntity {}
+import { Ingridient } from './Ingridient.entity';
 
 @Entity()
-export class Source extends CustomBaseEntity {}
+export class Source extends CustomBaseEntity {
+  @Property()
+  food_group: string;
+
+  @Property()
+  food_item: string;
+
+  @Property()
+  carbon_footprint: number;
+
+  @Enum()
+  carbon_footprint_uncertainty: Uncertainty;
+
+  @Property()
+  water_footprint: number;
+
+  @Enum()
+  water_footprint_uncertainty: Uncertainty;
+
+  @OneToMany(() => Ingridient, (ingridient) => ingridient.source)
+  ingridients = new Collection<Ingridient>(this);
+}
+
+export enum Uncertainty {
+  LOW = 'low',
+  HIGH = 'high',
+}
