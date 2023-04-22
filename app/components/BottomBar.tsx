@@ -33,8 +33,8 @@ export const NavItem = ({ icon, name }: NavItemProps) => {
 
   // active
   return (
-    <View className="px-4 py-2 flex items-center border-b-2 border-teal-500">
-      <Icon name={icon} size={20} color="#14b8a6" />
+    <View className="px-4 py-2 flex items-center border-b-2 border-teal-400">
+      <Icon name={icon} size={20} color="#2dd4bf" />
       <Text className="text-teal-400 font-bold">{name}</Text>
     </View>
   );
@@ -44,9 +44,9 @@ export const BottomBar = () => {
   const navigate = useNavigate();
 
   return (
-    <View className="flex flex-row justify-evenly items-center bg-white shadow-lg p-2">
+    <View className="flex flex-row justify-evenly items-center bg-gray-50 shadow-lg p-2">
       {/* navigation buttons */}
-      <NavItem name="Profile" icon="user-alt" />
+      {/* <NavItem name="Profile" icon="user-alt" /> */}
       <NavItem name="Food" icon="apple" />
       <NavItem name="Search" icon="bolt" />
       <NavItem name="Follow" icon="user-friends" />
