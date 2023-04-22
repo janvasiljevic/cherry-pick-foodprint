@@ -12,6 +12,17 @@ async function bootstrap() {
     .setDescription('FoodPrint API description')
     .setVersion('1.0')
     .addTag('foodprint')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
     .build();
 
   app.useGlobalPipes(

@@ -10,10 +10,11 @@ import {
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('recipe')
 @ApiTags('Recipes')
+@ApiBearerAuth('JWT-auth') //edit here
 export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
 

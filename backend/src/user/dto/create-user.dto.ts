@@ -1,12 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { MinLength } from 'class-validator';
+import { IsAlphanumeric, IsArray, MinLength } from 'class-validator';
+import { LoginDto } from 'src/auth/dto/login.dto';
 
-export class CreateUserDto {
-  @MinLength(4)
-  @ApiProperty({ example: 'test' })
-  username: string;
+export class CreateUserDto extends LoginDto {
+  @MinLength(2)
+  @IsAlphanumeric()
+  firstName: string;
 
-  @MinLength(8)
-  @ApiProperty({ example: '12345678' })
-  password: string;
+  @MinLength(2)
+  @IsAlphanumeric()
+  lastName: string;
+
+  @IsArray()
+  socials: string[];
 }

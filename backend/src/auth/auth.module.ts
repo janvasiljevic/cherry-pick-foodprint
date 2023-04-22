@@ -8,6 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { LocalStrategy } from './strategy/local.auth';
+import { JwtStrategy } from './strategy/jwt.strategy';
 
 @Module({
   imports: [
@@ -16,11 +17,11 @@ import { LocalStrategy } from './strategy/local.auth';
     PassportModule,
     JwtModule.register({
       // Its a hackatkon :shrug:
-      secret: 'secret',
+      secret: 'TODO',
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  providers: [AuthService, UserService, LocalStrategy],
+  providers: [AuthService, UserService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
