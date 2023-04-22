@@ -399,6 +399,11 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.38.0.tgz#73a8a0d8aa8a8e6fe270431c5e72ae91b5337892"
   integrity sha512-IoD2MfUnOV58ghIHCiil01PcohxjbYR/qCxsoC+xNgUwh1EY8jOOrYmu3d3a71+tJJ23uscEV4X2HJWMsPJu4g==
 
+"@faker-js/faker@7.6.0":
+  version "7.6.0"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-7.6.0.tgz#9ea331766084288634a9247fcd8b84f16ff4ba07"
+  integrity sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==
+
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.8.tgz#03595ac2075a4dc0f191cc2131de14fbd7d410b9"
@@ -785,6 +790,15 @@
   dependencies:
     globby "11.1.0"
     ts-morph "18.0.0"
+
+"@mikro-orm/seeder@^5.6.16":
+  version "5.6.16"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/seeder/-/seeder-5.6.16.tgz#c658f00ab7053b542da2faf24e6996bde287569e"
+  integrity sha512-kEaqxRoASz4i0YoUKBbJ6rjxbwhyI34IVPWw+qYUWzla+ZEke0o57enKqPtXo9e/qEPNQ/qCg4FuftfXCk2pZQ==
+  dependencies:
+    "@faker-js/faker" "7.6.0"
+    fs-extra "11.1.1"
+    globby "11.1.0"
 
 "@nestjs/cli@^9.0.0":
   version "9.4.0"
@@ -2189,6 +2203,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+csv-parse@^5.3.8:
+  version "5.3.8"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-5.3.8.tgz#c9919fbc5670fddec09a4b40e25365a2d11956d1"
+  integrity sha512-ird8lzMv9I64oqIVIHdaTbT7Yr55n2C/Nv6m1LxO7nddLEeI67468VQ9Ik+r6lwYbK9kTE1oSqAVcVKc/Uqx6g==
 
 debug@2.6.9:
   version "2.6.9"

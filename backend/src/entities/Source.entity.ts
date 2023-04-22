@@ -1,4 +1,11 @@
-import { Collection, Entity, Enum, OneToMany, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  Enum,
+  OneToMany,
+  Property,
+  types,
+} from '@mikro-orm/core';
 import { CustomBaseEntity } from './CustomBaseEntity';
 import { Ingridient } from './Ingridient.entity';
 
@@ -10,23 +17,23 @@ export class Source extends CustomBaseEntity {
   @Property()
   food_item: string;
 
-  @Property()
-  carbon_footprint: number;
+  @Property({ nullable: true, type: types.float })
+  carbon_footprint?: number;
 
-  @Enum()
-  carbon_footprint_uncertainty: Uncertainty;
+  @Enum({ items: () => Uncertainty, nullable: true })
+  carbon_footprint_uncertainty?: Uncertainty;
 
-  @Property()
-  water_footprint: number;
+  @Property({ nullable: true, type: types.float })
+  water_footprint?: number;
 
-  @Enum()
-  water_footprint_uncertainty: Uncertainty;
+  @Enum({ items: () => Uncertainty, nullable: true })
+  water_footprint_uncertainty?: Uncertainty;
 
   @OneToMany(() => Ingridient, (ingridient) => ingridient.source)
   ingridients = new Collection<Ingridient>(this);
 }
 
 export enum Uncertainty {
-  LOW = 'low',
-  HIGH = 'high',
+  L = 'L',
+  H = 'H',
 }
