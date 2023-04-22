@@ -1,4 +1,5 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateIngridientDto } from './create-ingridient.dto';
+export class UpdateIngridientDto {
+  weight: number;
 
-export class UpdateIngridientDto extends PartialType(CreateIngridientDto) {}
+  name: string;
+}

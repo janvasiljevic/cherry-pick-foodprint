@@ -1,17 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
-} from '@nestjs/common';
-import { IngridientService } from './ingridient.service';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateIngridientDto } from './dto/create-ingridient.dto';
-import { SearchIngridientDto } from './dto/search-ingridient.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { UpdateIngridientDto } from './dto/update-ingridient.dto';
+import { IngridientService } from './ingridient.service';
 
 @Controller('ingridient')
 @ApiTags('Ingridients')
@@ -23,14 +14,16 @@ export class IngridientController {
     return this.ingridientService.create(createIngridientDto);
   }
 
-  @Get('search')
-  @ApiOperation({ summary: 'Search ingridients -TOOD' })
-  search(@Query() searchIngridient: SearchIngridientDto) {
-    console.log(searchIngridient);
+  @Patch(':id')
+  update(
+    @Body() updateIngridientDto: UpdateIngridientDto,
+    @Param('id') id: string,
+  ) {
+    return this.ingridientService.update(id, updateIngridientDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.ingridientService.remove(+id);
+    return this.ingridientService.remove(id);
   }
 }

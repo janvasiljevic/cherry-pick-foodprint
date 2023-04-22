@@ -19,6 +19,9 @@ export class Recipe extends CustomBaseEntity {
   @Property()
   description: string;
 
+  @Property()
+  image_url: string;
+
   @ManyToOne()
   author: User;
 
@@ -49,6 +52,7 @@ export class Recipe extends CustomBaseEntity {
     author: User,
     ingridients: Ingridient[],
     foodTags: FoodTag[],
+    imageName: string,
   ) {
     super();
 
@@ -57,6 +61,8 @@ export class Recipe extends CustomBaseEntity {
     this.author = author;
     this.ingridients = new Collection<Ingridient>(this, ingridients);
     this.foodTags = foodTags;
+    this.image_url = imageName;
+    this.ingridients = new Collection<Ingridient>(this, ingridients);
   }
 }
 
