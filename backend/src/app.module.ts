@@ -8,6 +8,7 @@ import { DevModule } from './dev/dev.module';
 import { IngridientModule } from './ingridient/ingridient.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { UserModule } from './user/user.module';
+import { SourceModule } from './source/source.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserModule } from './user/user.module';
     RecipeModule,
     IngridientModule,
     DevModule,
+    SourceModule,
   ],
   controllers: [],
   providers: [
