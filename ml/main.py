@@ -19,15 +19,11 @@ df_water_clean = df_water_clean.rename(columns={"Uncertainty    low  (L)  high (
 # rename co2 uncertainty to "CO2 Footprint Uncertainty"
 df_co2 = df_co2.rename(columns={"Uncertainty    low (L) high (H)": "CO2 Footprint Uncertainty"})
 
-# PRINT COLUMN NAMES
-print(df_co2.columns)
-print(df_water_clean.columns)
 
 # MERGE BY COLUMN NAME "Food commodity ITEM", ignore items with no possible join
 df = pd.merge(df_co2, df_water_clean, on="Food commodity ITEM", how="left")
 
 # PRINT COLUMN NAMES
-print(df.columns)
 
 # keep only columns:
 # "FOOD COMMODITY GROUP"
@@ -42,13 +38,25 @@ df = df.rename(columns={"CO2 Footprint kg CO2/kg o kg of food ITEM": "CO2 Footpr
 
 
 # rename columns to more readable names with underscores.
-# food
+# food_group
+# food_item
+# co2_footprint_kg
+# co2_footprint_uncertainty
+# water_footprint_kg
+# water_footprint_uncertainty
 
+df = df.rename(columns={"FOOD COMMODITY GROUP": "food_group", "Food commodity ITEM": "food_item", "Carbon Footprint kg CO2eq/kg or l of food ITEM": "co2_footprint_kg", "CO2 Footprint Uncertainty": "co2_footprint_uncertainty", "Water Footprint liters water/kg o liter of food ITEM": "water_footprint_kg", "Water Footprint Uncertainty": "water_footprint_uncertainty"})
 
+# sanitize food_item column
+# to lower case
+# remove spaces and special characters
 
+df["food_item"] = df["food_item"].str.lower()
+df["food_item"] = df["food_item"].str.replace(" ", "_")
+df["food_item"] = df["food_item"].str.replace("*", "")
 
 # export to xlsx
 df.to_excel("data/merged.xlsx")
 
 # export to csv
-df.to_csv("data/merged.csv")
+df.to_csv("data/merged.csv", index=False, header=True)
