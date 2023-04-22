@@ -100,6 +100,23 @@
           "primary": false,
           "nullable": false,
           "mappedType": "string"
+        },
+        "food_tags": {
+          "name": "food_tags",
+          "type": "text[]",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'{}'",
+          "enumItems": [
+            "High protein",
+            "Meat",
+            "Fish",
+            "Low glycemic index",
+            "Rich in fiber"
+          ],
+          "mappedType": "array"
         }
       },
       "name": "recipe",
