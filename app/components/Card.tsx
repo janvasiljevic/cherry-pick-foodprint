@@ -26,6 +26,7 @@ const Card = ({
   bookmarkedBy,
 }: Recipe) => {
   const { mutate: bookmark, isLoading } = useRecipeControllerBookmark();
+  console.log("hiihih");
 
   return (
     <View className="flex flex-col rounded-xl bg-white m-4 border-2 border-slate-200 ">
@@ -37,20 +38,20 @@ const Card = ({
       <View className="flex flex-row justify-between">
         <View />
         <View className="flex flex-row">
-          {calculate_carbon_footprint && (
+          {calculate_carbon_footprint ? (
             <View className="bg-purple-500 p-2 px-4 rounded-3xl -mt-6 mr-4 border-2 border-white">
               <Text className="text-white font-bold text-xs">
-                {calculate_carbon_footprint} Co2
+                {calculate_carbon_footprint + " Co2"}
               </Text>
             </View>
-          )}
-          {calculate_water_footprint && (
+          ) : null}
+          {calculate_water_footprint ? (
             <View className="bg-blue-500 p-2 px-4 rounded-3xl -mt-6 mr-4  border-2 border-white">
               <Text className="text-white font-bold text-xs">
                 {calculate_water_footprint}
               </Text>
             </View>
-          )}
+          ) : null}
         </View>
       </View>
 
@@ -67,7 +68,7 @@ const Card = ({
           <View className=" px-4 py-2 flex  items-center">
             <Icon name="comment-alt" size={14} color="#cbd5e1" />
             <Text className="text-gray-300 text-sm">
-              comment {comments?.length || "?"}
+              {"comment " + (comments?.length || "?")}
             </Text>
           </View>
         </TouchableOpacity>
