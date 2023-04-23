@@ -2,20 +2,38 @@ import { View, Text, TextInput, Button } from "react-native";
 import { Group, Stack } from "../../components/Util";
 import { Formik } from "formik";
 
-import { Entypo } from "@expo/vector-icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-native";
+import { useUserControllerCreate } from "../../api/user/user";
+
+import * as SecureStore from "expo-secure-store";
 
 export const Register = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { mutate, isLoading } = useUserControllerCreate({
+    mutation: {},
+  });
+
+  // if token exists, navigate to app
+  SecureStore.getItemAsync("at").then((token) => {
+    if (token) {
+      navigate("/app");
+    }
+  });
 
   return (
     <Formik
       initialValues={{ email: "", password: "", name: "", surname: "" }}
       onSubmit={(values) => {
-        console.log(values);
-        setLoading(true);
+        mutate({
+          data: {
+            firstName: values.name,
+            lastName: values.surname,
+            password: values.password,
+            socials: [],
+            username: values.email,
+          },
+        });
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -45,6 +63,7 @@ export const Register = () => {
                 </View>
                 <View className="border-b border-slate-300 mt-4">
                   <TextInput
+                    secureTextEntry={true}
                     className="underline pt-2"
                     placeholder="Password"
                     onChangeText={handleChange("password")}
@@ -83,11 +102,11 @@ export const Register = () => {
                   Have an account?{" "}
                 </Text>
                 <Button
-                  disabled={loading}
+                  disabled={isLoading}
                   onPress={() => {
                     handleSubmit();
                   }}
-                  title={loading ? "Loading..." : "Register"}
+                  title={isLoading ? "Loading..." : "Register"}
                   color="#14b8a6"
                 />
               </Group>

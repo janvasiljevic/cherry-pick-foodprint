@@ -7,10 +7,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { Card } from "../components/Card";
+import Card from "../components/Card";
 import { Formik } from "formik";
+import { useRecipeControllerSearch } from "../api/recipes/recipes";
 
 export const SearchView = () => {
+  const { data, isLoading } = useRecipeControllerSearch({
+    query: {},
+  });
+
   return (
     <ScrollView className="h-full p-4">
       <View className="bg-blue-100 p-2 rounded-lg border border-blue-300 flex flex-row justify-around items-center">
@@ -52,10 +57,6 @@ export const SearchView = () => {
           </View>
         )}
       </Formik>
-      <Card />
-      <Card />
-      <Card />
-      <Card />
     </ScrollView>
   );
 };

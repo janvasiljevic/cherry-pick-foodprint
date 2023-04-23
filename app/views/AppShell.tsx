@@ -4,6 +4,7 @@ import { TopBar } from "../components/TopBar";
 import { Outlet, Route, Routes } from "react-router-native";
 import { Feed } from "./Feed";
 import { SearchView } from "./Search";
+import { AddView } from "./Add";
 
 export const AppShell = () => {
   // main app container. routes are defined here and rendered in the main container
@@ -18,6 +19,7 @@ export const AppShell = () => {
       <View className=" flex-1 bg-gray-100">
         <Routes>
           <Route path="food" Component={Feed} />
+          <Route path="add" Component={AddView} />
           <Route path="search" Component={SearchView} />
 
           <Route path="*" Component={View} />
