@@ -40,20 +40,12 @@ export const recipeControllerCreate = (
   createRecipeDto: BodyType<CreateRecipeDto>,
   options?: SecondParameter<typeof customInstance>
 ) => {
-  const formData = new FormData();
-  formData.append("description", createRecipeDto.description);
-  formData.append("file", createRecipeDto.file);
-  createRecipeDto.ingredientIds.forEach((value) =>
-    formData.append("ingredientIds", value)
-  );
-  formData.append("name", createRecipeDto.name);
-
   return customInstance<Recipe>(
     {
       url: `/api/recipe`,
       method: "post",
-      headers: { "Content-Type": "multipart/form-data" },
-      data: formData,
+      headers: { "Content-Type": "application/json" },
+      data: createRecipeDto,
     },
     options
   );
