@@ -18,6 +18,7 @@ import {
   ApiBearerAuth,
   ApiConsumes,
   ApiOperation,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import { RequestWithUAT } from 'src/common/interfaces/tokens.interface';
@@ -55,11 +56,13 @@ export class RecipeController {
   ) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore_
-    const ingr = createRecipeDto.ingredientIds as unkown as string;
+    // const ingr = createRecipeDto.ingredientIds as unkown as string;
 
-    const tmp: CreateIngridientDto[] = JSON.parse('[' + ingr + ']');
+    // const tmp: CreateIngridientDto[] = JSON.parse('[' + ingr + ']');
 
-    createRecipeDto.ingredientIds = tmp;
+    // createRecipeDto.ingredientIds = tmp;
+
+    // console.log(createRecipeDto);
 
     console.log(createRecipeDto);
 
@@ -75,10 +78,11 @@ export class RecipeController {
     return this.recipeService.timeline(user.userId, timelineGet);
   }
 
-  @Get('search')
-  @ApiOperation({ summary: 'This will be the fancy AI Search - TODO' })
-  search() {
-    return this.recipeService.search();
+  @Get('search/:text')
+  @ApiParam({ name: 'text', description: 'Search text' })
+  @ApiOperation({ summary: 'This will be the fancy AI SearchO' })
+  search(@Param('text') text: string) {
+    return this.recipeService.search(text);
   }
 
   @Get(':id')

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SearchDto } from './source.controller';
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Source } from 'src/entities/Source.entity';
 import { EntityManager } from '@mikro-orm/postgresql';
@@ -46,30 +46,25 @@ export class SourceService {
     if (results.length > 0) {
       const s = results[0];
 
-      ingridient.source = s;
+      s.ingridients.init();
+      s.ingridients.add(ingridient);
 
-      const ogSource = await this.sourceRepository.findOne(
-        { id: s.id },
-        { populate: true, refresh: true },
-      );
+      await this.sourceRepository.persistAndFlush(s);
 
-      ogSource.ingridients.add(ingridient);
-
-      await this.sourceRepository.persistAndFlush(ogSource);
       let co2 = 0,
         water = 0;
 
-      if (ogSource.carbon_footprint != null) {
+      if (s.carbon_footprint != null) {
         co2 = (s.carbon_footprint / 1000) * ingridient.weight;
       }
 
-      if (ogSource.carbon_footprint != null) {
-        water = (ogSource.water_footprint / 1000) * ingridient.weight;
+      if (s.carbon_footprint != null) {
+        water = (s.water_footprint / 1000) * ingridient.weight;
       }
 
-      return { source: ogSource, co2, water };
+      ingridient.calculated_carbon_footprint = co2;
+      ingridient.calculated_water_footprint = water;
+      ingridient.source = s;
     }
-
-    return null;
   }
 }

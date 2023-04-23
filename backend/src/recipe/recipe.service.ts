@@ -1,12 +1,16 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
-import { EntityRepository } from '@mikro-orm/core';
+import { Collection, EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { User } from 'src/entities/User.entity';
 import { Recipe } from 'src/entities/Recipe.entity';
 import { TimelineGet } from './dto/timeline.dto';
 import { Ingridient } from 'src/entities/Ingridient.entity';
+import { Source } from 'src/entities/Source.entity';
+import { SourceService } from 'src/source/source.service';
+import { EntityManager } from '@mikro-orm/postgresql';
+import weaviate, { WeaviateClient } from 'weaviate-ts-client';
 
 @Injectable()
 export class RecipeService {
@@ -14,44 +18,66 @@ export class RecipeService {
   private readonly userRepository: EntityRepository<User>;
   private readonly ingridientRepository: EntityRepository<Ingridient>;
   private readonly logger = new Logger(RecipeService.name);
+  private readonly sourceService: SourceService;
 
+  private readonly em: EntityManager;
   constructor(
     @InjectRepository(Recipe) recipeRepository: EntityRepository<Recipe>,
     @InjectRepository(User) userRepository: EntityRepository<User>,
     @InjectRepository(Ingridient)
     ingridientRepository: EntityRepository<Ingridient>,
+    sourceRepository: SourceService,
+    em: EntityManager,
   ) {
     this.recipeRepository = recipeRepository;
     this.userRepository = userRepository;
     this.ingridientRepository = ingridientRepository;
+    this.sourceService = sourceRepository;
+    this.em = em;
   }
+  client = weaviate.client({
+    scheme: 'http',
+    host: 'localhost:8080',
+  });
 
   async create(createRecipeDto: CreateRecipeDto, userId: string) {
     const author = await this.userRepository.findOne({ id: userId });
 
     if (!author) throw new Error('User not found');
 
-    // const ingridients: Ingridient[] = await Promise.all(
-    //   createRecipeDto.ingredientIds.map(async (id) => {
-    //     // const item = await this.ingridientRepository.findOne({ id });
-
-    //     if (!item) throw new BadRequestException('Ingridient not found');
-
-    //     return item;
-    //   }),
-    // );
-
-    const recipe = new Recipe(
-      createRecipeDto.name,
-      createRecipeDto.description,
-      author,
-      // ingridients,
-      [],
-      [], // tags
-      '/public/',
+    const recipe = this.em.create(
+      Recipe,
+      {
+        name: createRecipeDto.name,
+        author: author,
+        description: createRecipeDto.description,
+        ingridients: createRecipeDto.ingredients.map((ingridient) =>
+          this.em.create(Ingridient, {
+            name: ingridient.name,
+            weight: ingridient.weight,
+          }),
+        ),
+      },
+      { persist: true },
     );
 
-    await this.recipeRepository.persist(recipe).flush();
+    for (const ingridient of recipe.ingridients) {
+      await this.sourceService.matchIngridient(ingridient);
+    }
+
+    recipe.calculate_carbon_footprint = 0;
+    recipe.calculate_water_footprint = 0;
+
+    for (const ingridient of recipe.ingridients) {
+      if (ingridient.calculated_carbon_footprint)
+        recipe.calculate_carbon_footprint +=
+          ingridient.calculated_carbon_footprint;
+      if (ingridient.calculated_water_footprint)
+        recipe.calculate_water_footprint +=
+          ingridient.calculated_water_footprint;
+    }
+
+    await this.em.flush();
 
     return recipe;
   }
@@ -80,8 +106,36 @@ export class RecipeService {
   }
 
   // TODO - SEARCH
-  search() {
-    return `This action returns all recipe`;
+  search(text: string) {
+    interface Pokedex {
+      data: Data;
+    }
+
+    interface Data {
+      Get: Get;
+    }
+
+    interface Get {
+      Recipe: Recipe[];
+    }
+
+    interface Recipe {
+      description: string;
+      name: string;
+    }
+    this.client.graphql
+      .get()
+      .withClassName('Recipe')
+      .withFields('name description')
+      .withNearText({ concepts: [text] })
+      .withLimit(10)
+      .do()
+      .then((res: Pokedex) => {
+        console.log(res);
+      })
+      .catch((err: Error) => {
+        console.error(err);
+      });
   }
 
   async findOne(id: string): Promise<Recipe> {

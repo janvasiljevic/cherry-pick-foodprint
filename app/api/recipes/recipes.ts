@@ -237,32 +237,36 @@ export const useRecipeControllerBookmark = <
   return useMutation(mutationOptions);
 };
 /**
- * @summary This will be the fancy AI Search - TODO
+ * @summary This will be the fancy AI SearchO
  */
 export const recipeControllerSearch = (
+  text: string,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal
 ) => {
-  return customInstance<string>(
-    { url: `/api/recipe/search`, method: "get", signal },
+  return customInstance<void>(
+    { url: `/api/recipe/search/${text}`, method: "get", signal },
     options
   );
 };
 
-export const getRecipeControllerSearchQueryKey = () =>
-  [`/api/recipe/search`] as const;
+export const getRecipeControllerSearchQueryKey = (text: string) =>
+  [`/api/recipe/search/${text}`] as const;
 
 export const getRecipeControllerSearchQueryOptions = <
   TData = Awaited<ReturnType<typeof recipeControllerSearch>>,
   TError = ErrorType<unknown>
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof recipeControllerSearch>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryOptions<
+>(
+  text: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof recipeControllerSearch>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  }
+): UseQueryOptions<
   Awaited<ReturnType<typeof recipeControllerSearch>>,
   TError,
   TData
@@ -270,13 +274,13 @@ export const getRecipeControllerSearchQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getRecipeControllerSearchQueryKey();
+    queryOptions?.queryKey ?? getRecipeControllerSearchQueryKey(text);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof recipeControllerSearch>>
-  > = ({ signal }) => recipeControllerSearch(requestOptions, signal);
+  > = ({ signal }) => recipeControllerSearch(text, requestOptions, signal);
 
-  return { queryKey, queryFn, ...queryOptions };
+  return { queryKey, queryFn, enabled: !!text, ...queryOptions };
 };
 
 export type RecipeControllerSearchQueryResult = NonNullable<
@@ -287,15 +291,18 @@ export type RecipeControllerSearchQueryError = ErrorType<unknown>;
 export const useRecipeControllerSearch = <
   TData = Awaited<ReturnType<typeof recipeControllerSearch>>,
   TError = ErrorType<unknown>
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof recipeControllerSearch>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getRecipeControllerSearchQueryOptions(options);
+>(
+  text: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof recipeControllerSearch>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getRecipeControllerSearchQueryOptions(text, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

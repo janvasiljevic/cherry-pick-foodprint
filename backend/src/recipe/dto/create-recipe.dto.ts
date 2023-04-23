@@ -25,5 +25,5 @@ export class CreateRecipeDto {
 
   @ApiProperty({ type: [CreateIngridientDto] })
   @Type(() => CreateIngridientDto)
-  ingredientIds: CreateIngridientDto[];
+  ingredients: CreateIngridientDto[];
 }
