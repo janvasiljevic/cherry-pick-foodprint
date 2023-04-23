@@ -3,11 +3,11 @@ import Card from "../components/Card";
 import { useUserControllerFindAll } from "../api/user/user";
 import { useRecipeControllerTimeline } from "../api/recipes/recipes";
 
-export const Feed = () => {
+export const user = ({ id }: { id: string }) => {
   // const { data, isLoading } = useUserControllerFindAll();
   // console.log(data);
 
-  const { data, isLoading } = useRecipeControllerTimeline({
+  const { data, isLoading } = useReci({
     cursor: "",
   });
 
@@ -20,3 +20,6 @@ export const Feed = () => {
     </ScrollView>
   );
 };
+function useReci(arg0: { cursor: string }): { data: any; isLoading: any } {
+  throw new Error("Function not implemented.");
+}
