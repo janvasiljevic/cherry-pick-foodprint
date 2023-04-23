@@ -10,16 +10,13 @@
           "name": {
             "type": "string"
           },
-          "sourceId": {
-            "type": "string"
-          },
           "weight": {
             "type": "number"
           }
         },
         "required": [
-          "weight",
-          "name"
+          "name",
+          "weight"
         ],
         "type": "object"
       },
@@ -35,7 +32,7 @@
           },
           "ingredientIds": {
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/CreateIngridientDto"
             },
             "type": "array"
           },
@@ -46,6 +43,7 @@
         },
         "required": [
           "file",
+          "ingredientIds",
           "name",
           "description"
         ],
@@ -84,48 +82,6 @@
           "firstName",
           "lastName",
           "socials"
-        ],
-        "type": "object"
-      },
-      "Ingridient": {
-        "properties": {
-          "calculated_carbon_footprint": {
-            "type": "number"
-          },
-          "calculated_water_footprint": {
-            "type": "number"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "recipe": {
-            "$ref": "#/components/schemas/Recipe"
-          },
-          "source": {
-            "$ref": "#/components/schemas/Source"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "weight": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "id",
-          "createdAt",
-          "updatedAt",
-          "recipe",
-          "name",
-          "weight"
         ],
         "type": "object"
       },
@@ -202,8 +158,15 @@
             "default": [],
             "type": "object"
           },
+          "link": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
+          },
+          "serverSideProvided": {
+            "default": false,
+            "type": "object"
           },
           "updatedAt": {
             "format": "date-time",
@@ -216,12 +179,11 @@
           "updatedAt",
           "name",
           "description",
-          "image_url",
-          "author",
           "bookmarkedBy",
           "ingridients",
           "foodTags",
-          "comments"
+          "comments",
+          "serverSideProvided"
         ],
         "type": "object"
       },
@@ -279,21 +241,6 @@
         ],
         "type": "object"
       },
-      "UpdateIngridientDto": {
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "weight": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "weight",
-          "name"
-        ],
-        "type": "object"
-      },
       "UpdateRecipeDto": {
         "properties": {
           "description": {
@@ -306,7 +253,7 @@
           },
           "ingredientIds": {
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/CreateIngridientDto"
             },
             "type": "array"
           },
@@ -455,105 +402,6 @@
         },
         "tags": [
           "controller"
-        ]
-      }
-    },
-    "/api/ingridient": {
-      "post": {
-        "operationId": "IngridientController_create",
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateIngridientDto"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Ingridient"
-                }
-              }
-            },
-            "description": ""
-          }
-        },
-        "tags": [
-          "Ingridients"
-        ]
-      }
-    },
-    "/api/ingridient/{id}": {
-      "delete": {
-        "operationId": "IngridientController_remove",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            },
-            "description": ""
-          }
-        },
-        "tags": [
-          "Ingridients"
-        ]
-      },
-      "patch": {
-        "operationId": "IngridientController_update",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateIngridientDto"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            },
-            "description": ""
-          }
-        },
-        "tags": [
-          "Ingridients"
         ]
       }
     },
@@ -825,9 +673,24 @@
         ],
         "responses": {
           "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Source"
+                  },
+                  "type": "array"
+                }
+              }
+            },
             "description": ""
           }
         },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
         "summary": "Search for sources",
         "tags": [
           "Source"

@@ -39,3 +39,4 @@ export * from "./userControllerFollow201";
 export * from "./userControllerUnfollow200";
 export * from "./userControllerUpdate200";
 export * from "./userRecipes";
+export * from "./recipeServerSideProvided";

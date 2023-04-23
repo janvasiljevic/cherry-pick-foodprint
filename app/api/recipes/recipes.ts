@@ -43,11 +43,9 @@ export const recipeControllerCreate = (
   const formData = new FormData();
   formData.append("description", createRecipeDto.description);
   formData.append("file", createRecipeDto.file);
-  if (createRecipeDto.ingredientIds !== undefined) {
-    createRecipeDto.ingredientIds.forEach((value) =>
-      formData.append("ingredientIds", value)
-    );
-  }
+  createRecipeDto.ingredientIds.forEach((value) =>
+    formData.append("ingredientIds", value)
+  );
   formData.append("name", createRecipeDto.name);
 
   return customInstance<Recipe>(

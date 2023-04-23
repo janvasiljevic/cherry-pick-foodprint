@@ -2,10 +2,12 @@ import {
   Collection,
   Entity,
   Enum,
+  Index,
   ManyToMany,
   ManyToOne,
   OneToMany,
   Property,
+  types,
 } from '@mikro-orm/core';
 import { CustomBaseEntity } from './CustomBaseEntity';
 import { Ingridient } from './Ingridient.entity';
@@ -16,14 +18,14 @@ export class Recipe extends CustomBaseEntity {
   @Property()
   name: string;
 
-  @Property()
+  @Property({ type: 'text' })
   description: string;
 
   @Property()
-  image_url: string;
+  image_url?: string;
 
   @ManyToOne()
-  author: User;
+  author?: User;
 
   @ManyToMany(() => User, (user) => user.bookmarks)
   bookmarkedBy: Collection<User> = new Collection<User>(this);
@@ -36,15 +38,22 @@ export class Recipe extends CustomBaseEntity {
   foodTags: FoodTag[] = [];
 
   // Carbon and water footprints are calculated from ingridients (sources)
-  @Property({ nullable: true })
+  @Property({ nullable: true, type: types.float })
   calculate_carbon_footprint?: number;
 
-  @Property({ nullable: true })
+  @Property({ nullable: true, type: types.float })
   calculate_water_footprint?: number;
 
   // Comments under the post made by other users
   @OneToMany(() => Comment, (comment) => comment.recipe)
   comments = new Collection<Comment>(this);
+
+  @Property({ nullable: true, lazy: true })
+  @Index()
+  link?: string;
+
+  @Property({ lazy: true })
+  serverSideProvided = false;
 
   constructor(
     name: string,

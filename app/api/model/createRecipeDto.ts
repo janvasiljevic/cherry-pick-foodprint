@@ -5,10 +5,11 @@
  * FoodPrint API description
  * OpenAPI spec version: 1.0
  */
+import type { CreateIngridientDto } from "./createIngridientDto";
 
 export interface CreateRecipeDto {
   description: string;
   file: Blob;
-  ingredientIds?: string[];
+  ingredientIds: CreateIngridientDto[];
   name: string;
 }

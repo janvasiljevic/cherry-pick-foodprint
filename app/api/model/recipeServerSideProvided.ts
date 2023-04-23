@@ -6,7 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CreateIngridientDto {
-  name: string;
-  weight: number;
-}
+export type RecipeServerSideProvided = { [key: string]: any };

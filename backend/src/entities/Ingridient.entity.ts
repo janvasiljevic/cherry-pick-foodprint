@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, Property, types } from '@mikro-orm/core';
 import { CustomBaseEntity } from './CustomBaseEntity';
 import { Recipe } from './Recipe.entity';
 import { Source } from './Source.entity';
@@ -12,14 +12,14 @@ export class Ingridient extends CustomBaseEntity {
   name!: string;
 
   @Property()
-  weight!: number;
+  weight = 0;
 
   @ManyToOne()
   source?: Source; // not neccessary that ingridient has a source
 
-  @Property({ nullable: true })
+  @Property({ nullable: true, type: types.float })
   calculated_carbon_footprint?: number;
 
-  @Property({ nullable: true })
+  @Property({ nullable: true, type: types.float })
   calculated_water_footprint?: number;
 }

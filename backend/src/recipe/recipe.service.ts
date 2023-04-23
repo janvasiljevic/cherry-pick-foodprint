@@ -35,21 +35,22 @@ export class RecipeService {
 
     if (!author) throw new Error('User not found');
 
-    const ingridients: Ingridient[] = await Promise.all(
-      createRecipeDto.ingredientIds.map(async (id) => {
-        const item = await this.ingridientRepository.findOne({ id });
+    // const ingridients: Ingridient[] = await Promise.all(
+    //   createRecipeDto.ingredientIds.map(async (id) => {
+    //     // const item = await this.ingridientRepository.findOne({ id });
 
-        if (!item) throw new BadRequestException('Ingridient not found');
+    //     if (!item) throw new BadRequestException('Ingridient not found');
 
-        return item;
-      }),
-    );
+    //     return item;
+    //   }),
+    // );
 
     const recipe = new Recipe(
       createRecipeDto.name,
       createRecipeDto.description,
       author,
-      ingridients,
+      // ingridients,
+      [],
       [], // tags
       '/public/' + fileName,
     );
