@@ -25,8 +25,8 @@ const Card = ({
   <View className="flex flex-col rounded-xl bg-white m-4 border-2 border-slate-200 ">
     {/* img */}
     <Image
-      source={{ uri: "https://picsum.photos/seed/picsum/500/500" }}
-      className="w-full h-36 bg-red-300 bg-contain rounded-lg"
+      source={{ uri: image_url }}
+      className="w-full h-36 bg-gray-200 bg-contain rounded-lg"
     />
     <View className="flex flex-row justify-between">
       <View />
@@ -61,7 +61,7 @@ const Card = ({
         <View className=" px-4 py-2 flex  items-center">
           <Icon name="comment-alt" size={14} color="#cbd5e1" />
           <Text className="text-gray-300 text-sm">
-            comment {comments.length}
+            comment {comments?.length || "?"}
           </Text>
         </View>
       </TouchableOpacity>
@@ -69,7 +69,7 @@ const Card = ({
         <View className=" px-4 py-2 flex  items-center ">
           <Icon name="heart" size={14} color="#cbd5e1" />
           <Text className="text-gray-300 text-sm">
-            save {bookmarkedBy.length}
+            bookmark {bookmarkedBy?.length || "?"}
           </Text>
         </View>
       </TouchableOpacity>

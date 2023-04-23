@@ -14,12 +14,12 @@ export const Register = () => {
     mutation: {},
   });
 
-  // if token exists, navigate to app
-  SecureStore.getItemAsync("at").then((token) => {
-    if (token) {
-      navigate("/app");
-    }
-  });
+  // // if token exists, navigate to app
+  // SecureStore.getItemAsync("at").then((token) => {
+  //   if (token) {
+  //     navigate("/app");
+  //   }
+  // });
 
   return (
     <Formik
