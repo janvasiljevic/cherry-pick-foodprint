@@ -3,6 +3,7 @@ import { Login } from "./views/login/Login";
 import { Register } from "./views/login/Register";
 import { AppShell } from "./views/AppShell";
 import { NativeRouter, Route, Link, Routes } from "react-router-native";
+import { Feed } from "./views/Feed";
 
 export default function App() {
   return (
@@ -12,8 +13,9 @@ export default function App() {
         <Routes>
           <Route path="/login" Component={Login} />
           <Route path="/register" Component={Register} />
-          {/* <Route path="/" Component={Login} /> */}
           <Route path="/" Component={AppShell} />
+          <Route path="/app" Component={AppShell} />
+          <Route path="/app/*" Component={AppShell} />
         </Routes>
       </NativeRouter>
 
@@ -21,9 +23,3 @@ export default function App() {
     </View>
   );
 }
-
-// import { NativeWindStyleSheet } from "nativewind";
-
-// NativeWindStyleSheet.setOutput({
-//   default: "native",
-// });

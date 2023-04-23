@@ -1,5 +1,15 @@
-import { View } from "react-native";
+import { View, Text, ScrollView } from "react-native";
+import { Card } from "../components/Card";
 
 export const Feed = () => {
-  return <View></View>;
+  return (
+    <ScrollView>
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+    </ScrollView>
+  );
 };
