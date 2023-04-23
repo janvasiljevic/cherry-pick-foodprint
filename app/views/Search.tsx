@@ -5,16 +5,18 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Card from "../components/Card";
 import { Formik } from "formik";
 import { useRecipeControllerSearch } from "../api/recipes/recipes";
+import { useState } from "react";
 
 export const SearchView = () => {
-  const { data, isLoading } = useRecipeControllerSearch({
-    query: {},
-  });
+  const [search, searchSet] = useState("carrot");
+  const { data, isLoading } = useRecipeControllerSearch(search);
+  console.log(data);
 
   return (
     <ScrollView className="h-full p-4">
@@ -29,7 +31,8 @@ export const SearchView = () => {
         initialValues={{ description: "" }}
         onSubmit={(values) => {
           console.log(values);
-          alert("searching for: " + values.description);
+
+          searchSet(values.description);
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -57,6 +60,14 @@ export const SearchView = () => {
           </View>
         )}
       </Formik>
+      {isLoading ? <ActivityIndicator size="large" /> : null}
+
+      {/* {(data && data.length === 0) ?? <Text>No recipes found</Text>}
+      <Text>{(data && data.length) || 0}</Text> */}
+      {data && data.length > 0
+        ? data?.map((recipe) => <Card {...recipe} />)
+        : null}
+      {/* {(data && data.length > 0) ?? data?.map((recipe) => <Card {...recipe} />)} */}
     </ScrollView>
   );
 };
