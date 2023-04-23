@@ -47,7 +47,7 @@ export class RecipeController {
   //     }),
   //   }),
   // )
-  @ApiConsumes('multipart/form-data')
+  // @ApiConsumes('multipart/form-data')
   create(
     @Request() { user: at }: RequestWithUAT,
     @Body() createRecipeDto: CreateRecipeDto,
