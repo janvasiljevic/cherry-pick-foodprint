@@ -4,8 +4,8 @@ export default defineConfig({
   on: {
     input: "./../spec/schema.json",
     output: {
-      target: "./src/api/index.ts",
-      schemas: "src/api/model",
+      target: "./api/index.ts",
+      schemas: "./api/model",
       mode: "tags-split",
       client: "react-query",
       override: {
