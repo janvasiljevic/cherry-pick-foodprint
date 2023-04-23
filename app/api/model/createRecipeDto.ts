@@ -9,6 +9,6 @@ import type { CreateIngridientDto } from "./createIngridientDto";
 
 export interface CreateRecipeDto {
   description: string;
-  ingredientIds: CreateIngridientDto[];
+  ingredients: CreateIngridientDto[];
   name: string;
 }

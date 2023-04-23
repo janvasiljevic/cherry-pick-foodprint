@@ -10,6 +10,7 @@ import { Ingridient } from 'src/entities/Ingridient.entity';
 import { Source } from 'src/entities/Source.entity';
 import { SourceService } from 'src/source/source.service';
 import { EntityManager } from '@mikro-orm/postgresql';
+import weaviate, { WeaviateClient } from 'weaviate-ts-client';
 
 @Injectable()
 export class RecipeService {
@@ -34,6 +35,10 @@ export class RecipeService {
     this.sourceService = sourceRepository;
     this.em = em;
   }
+  client = weaviate.client({
+    scheme: 'http',
+    host: 'localhost:8080',
+  });
 
   async create(createRecipeDto: CreateRecipeDto, userId: string) {
     const author = await this.userRepository.findOne({ id: userId });
@@ -101,8 +106,36 @@ export class RecipeService {
   }
 
   // TODO - SEARCH
-  search() {
-    return `This action returns all recipe`;
+  search(text: string) {
+    interface Pokedex {
+      data: Data;
+    }
+
+    interface Data {
+      Get: Get;
+    }
+
+    interface Get {
+      Recipe: Recipe[];
+    }
+
+    interface Recipe {
+      description: string;
+      name: string;
+    }
+    this.client.graphql
+      .get()
+      .withClassName('Recipe')
+      .withFields('name description')
+      .withNearText({ concepts: [text] })
+      .withLimit(10)
+      .do()
+      .then((res: Pokedex) => {
+        console.log(res);
+      })
+      .catch((err: Error) => {
+        console.error(err);
+      });
   }
 
   async findOne(id: string): Promise<Recipe> {

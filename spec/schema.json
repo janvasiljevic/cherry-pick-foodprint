@@ -26,7 +26,7 @@
             "minLength": 1,
             "type": "string"
           },
-          "ingredientIds": {
+          "ingredients": {
             "items": {
               "$ref": "#/components/schemas/CreateIngridientDto"
             },
@@ -38,7 +38,7 @@
           }
         },
         "required": [
-          "ingredientIds",
+          "ingredients",
           "name",
           "description"
         ],
@@ -242,7 +242,7 @@
             "minLength": 1,
             "type": "string"
           },
-          "ingredientIds": {
+          "ingredients": {
             "items": {
               "$ref": "#/components/schemas/CreateIngridientDto"
             },
@@ -545,19 +545,22 @@
         ]
       }
     },
-    "/api/recipe/search": {
+    "/api/recipe/search/{text}": {
       "get": {
         "operationId": "RecipeController_search",
-        "parameters": [],
+        "parameters": [
+          {
+            "description": "Search text",
+            "in": "path",
+            "name": "text",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
             "description": ""
           }
         },
@@ -566,7 +569,7 @@
             "JWT-auth": []
           }
         ],
-        "summary": "This will be the fancy AI Search - TODO",
+        "summary": "This will be the fancy AI SearchO",
         "tags": [
           "Recipes"
         ]
