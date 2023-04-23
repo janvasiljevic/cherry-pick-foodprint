@@ -39,6 +39,7 @@ export const MultiAdd = ({
       <View className="bg-white p-4 mt-1">
         {ingredients.map((ingredient, i) => (
           <TouchableOpacity
+            key={ingredient.name + i}
             onPress={() => {
               setIngredients(ingredients.filter((_, index) => index !== i));
             }}
