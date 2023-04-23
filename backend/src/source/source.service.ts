@@ -41,7 +41,7 @@ export class SourceService {
       [ingridient.name, ingridient.name],
     );
 
-    const results = sources.rows.map((s) => this.em.map(Source, s));
+    const results: Source[] = sources.rows.map((s) => this.em.map(Source, s));
 
     if (results.length > 0) {
       const s = results[0];
@@ -56,16 +56,20 @@ export class SourceService {
       ogSource.ingridients.add(ingridient);
 
       await this.sourceRepository.persistAndFlush(ogSource);
+      let co2 = 0,
+        water = 0;
 
       if (ogSource.carbon_footprint != null) {
-        ingridient.calculated_carbon_footprint =
-          (s.carbon_footprint / 1000) * ingridient.weight;
+        co2 = (s.carbon_footprint / 1000) * ingridient.weight;
       }
 
       if (ogSource.carbon_footprint != null) {
-        ingridient.calculated_water_footprint =
-          (ogSource.water_footprint / 1000) * ingridient.weight;
+        water = (ogSource.water_footprint / 1000) * ingridient.weight;
       }
+
+      return { source: ogSource, co2, water };
     }
+
+    return null;
   }
 }

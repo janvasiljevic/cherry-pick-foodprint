@@ -83,3 +83,189 @@ export const useDevControllerSeed = <
 
   return useMutation(mutationOptions);
 };
+export const devControllerSeed1 = (
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<void>(
+    { url: `/api/dev/seed1`, method: "post" },
+    options
+  );
+};
+
+export const getDevControllerSeed1MutationOptions = <
+  TError = ErrorType<unknown>,
+  TVariables = void,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof devControllerSeed1>>,
+    TError,
+    TVariables,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof devControllerSeed1>>,
+  TError,
+  TVariables,
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof devControllerSeed1>>,
+    TVariables
+  > = () => {
+    return devControllerSeed1(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DevControllerSeed1MutationResult = NonNullable<
+  Awaited<ReturnType<typeof devControllerSeed1>>
+>;
+
+export type DevControllerSeed1MutationError = ErrorType<unknown>;
+
+export const useDevControllerSeed1 = <
+  TError = ErrorType<unknown>,
+  TVariables = void,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof devControllerSeed1>>,
+    TError,
+    TVariables,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const mutationOptions = getDevControllerSeed1MutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+export const devControllerSeed2 = (
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<void>(
+    { url: `/api/dev/seed2`, method: "post" },
+    options
+  );
+};
+
+export const getDevControllerSeed2MutationOptions = <
+  TError = ErrorType<unknown>,
+  TVariables = void,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof devControllerSeed2>>,
+    TError,
+    TVariables,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof devControllerSeed2>>,
+  TError,
+  TVariables,
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof devControllerSeed2>>,
+    TVariables
+  > = () => {
+    return devControllerSeed2(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DevControllerSeed2MutationResult = NonNullable<
+  Awaited<ReturnType<typeof devControllerSeed2>>
+>;
+
+export type DevControllerSeed2MutationError = ErrorType<unknown>;
+
+export const useDevControllerSeed2 = <
+  TError = ErrorType<unknown>,
+  TVariables = void,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof devControllerSeed2>>,
+    TError,
+    TVariables,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const mutationOptions = getDevControllerSeed2MutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+export const devControllerSeed3 = (
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<void>(
+    { url: `/api/dev/seed3`, method: "post" },
+    options
+  );
+};
+
+export const getDevControllerSeed3MutationOptions = <
+  TError = ErrorType<unknown>,
+  TVariables = void,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof devControllerSeed3>>,
+    TError,
+    TVariables,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof devControllerSeed3>>,
+  TError,
+  TVariables,
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof devControllerSeed3>>,
+    TVariables
+  > = () => {
+    return devControllerSeed3(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DevControllerSeed3MutationResult = NonNullable<
+  Awaited<ReturnType<typeof devControllerSeed3>>
+>;
+
+export type DevControllerSeed3MutationError = ErrorType<unknown>;
+
+export const useDevControllerSeed3 = <
+  TError = ErrorType<unknown>,
+  TVariables = void,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof devControllerSeed3>>,
+    TError,
+    TVariables,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const mutationOptions = getDevControllerSeed3MutationOptions(options);
+
+  return useMutation(mutationOptions);
+};

@@ -17,6 +17,7 @@ import { RecipeModule } from './recipe/recipe.module';
       clientUrl: 'postgresql://postgres:postgres@localhost:10432/foodprint',
       type: 'postgresql',
       metadataProvider: TsMorphMetadataProvider,
+      // debug: true,
     }),
     AuthModule,
     UserModule,

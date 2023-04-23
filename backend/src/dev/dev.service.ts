@@ -113,7 +113,9 @@ export class DevService {
     );
 
     this.logger.log('Seeding sources done');
+  }
 
+  async seed1() {
     const headers2 = [
       'id',
       'meal_type',
@@ -162,17 +164,17 @@ export class DevService {
     );
 
     this.logger.log('Seeding recipes done');
+  }
 
+  async seed2() {
     const headers3 = ['url', 'quantity_unit', 'item'];
-
     const csvFilePath3 = path.resolve(
       __dirname,
       '../../../ml/scraped/recipes_list_processed.csv',
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
     const fileContent3 = fs.readFileSync(csvFilePath3, { encoding: 'utf-8' });
+
     await parse(
       fileContent3,
       {
@@ -182,15 +184,13 @@ export class DevService {
       async (error, result: ReadCsvRow3[]) => {
         if (error) console.error(error);
 
-        for (let i = 0; i < result.length; i++) {
-          const row = result[i];
+        for (const row of result) {
           const recipe = await this.recipeRepository.findOne(
             { link: row.url },
-            { refresh: true },
+            { refresh: true, populate: ['ingridients'] },
           );
-          if (!recipe) continue;
 
-          const ingridient = new Ingridient();
+          if (!recipe) return;
 
           let number = 0;
 
@@ -206,15 +206,18 @@ export class DevService {
             }
           }
 
-          wrap(ingridient).assign({
-            name: row.item,
-            weight: number,
-            recipe: recipe,
-          });
+          console.log(row.item, number, recipe);
 
+          const ingridient = new Ingridient(row.item, number, recipe);
           recipe.ingridients.add(ingridient);
 
-          await this.sourceService.matchIngridient(ingridient);
+          const a = await this.sourceService.matchIngridient(ingridient);
+
+          if (a) {
+            ingridient.calculated_carbon_footprint = a.co2;
+            ingridient.calculated_water_footprint = a.water;
+            ingridient.source = a.source;
+          }
 
           await this.ingridientRepository.persistAndFlush(ingridient);
           await this.recipeRepository.persistAndFlush(recipe);
@@ -226,7 +229,9 @@ export class DevService {
     );
 
     this.logger.log('Seeding ingridients done');
+  }
 
+  async seed3() {
     // final all recipes
     const recipes = await this.recipeRepository.findAll({});
 
@@ -242,10 +247,7 @@ export class DevService {
       recipe.calculate_carbon_footprint = 0;
       recipe.calculate_water_footprint = 0;
 
-      console.log((await recipe.ingridients.loadItems()).length);
-
       recipe.ingridients.getItems().forEach((ing) => {
-        console.log(ing);
         if (ing.calculated_carbon_footprint != null) {
           recipe.calculate_carbon_footprint +=
             ing.calculated_carbon_footprint * ing.weight;
