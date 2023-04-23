@@ -12,9 +12,7 @@ import { Formik } from "formik";
 import { useRecipeControllerSearch } from "../api/recipes/recipes";
 
 export const SearchView = () => {
-  const { data, isLoading } = useRecipeControllerSearch({
-    query: {},
-  });
+  const { data, isLoading } = useRecipeControllerSearch();
 
   return (
     <ScrollView className="h-full p-4">
