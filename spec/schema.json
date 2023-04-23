@@ -47,8 +47,7 @@
         "required": [
           "file",
           "name",
-          "description",
-          "ingredientIds"
+          "description"
         ],
         "type": "object"
       },
@@ -1005,7 +1004,15 @@
       },
       "patch": {
         "operationId": "UserController_update",
-        "parameters": [],
+        "parameters": [
+          {
+            "description": "User id",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {}
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {

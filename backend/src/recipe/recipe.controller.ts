@@ -54,6 +54,7 @@ export class RecipeController {
     @Body() createRecipeDto: CreateRecipeDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    console.log(createRecipeDto);
     return this.recipeService.create(createRecipeDto, at.userId, file.filename);
   }
 

@@ -37,7 +37,11 @@ export class RecipeService {
 
     const ingridients: Ingridient[] = await Promise.all(
       createRecipeDto.ingredientIds.map(async (id) => {
-        return await this.ingridientRepository.findOne({ id });
+        const item = await this.ingridientRepository.findOne({ id });
+
+        if (!item) throw new BadRequestException('Ingridient not found');
+
+        return item;
       }),
     );
 

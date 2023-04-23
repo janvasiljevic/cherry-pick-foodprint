@@ -9,7 +9,7 @@ import {
   Query,
   Request,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { SwaggerAuthDecorator } from 'src/common/decorators/openapi-auth.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { User } from 'src/entities/User.entity';
@@ -50,6 +50,7 @@ export class UserController {
 
   @SwaggerAuthDecorator
   @Patch(':id')
+  @ApiParam({ name: 'id', description: 'User id' })
   @ApiOperation({ summary: 'Update your profile' })
   update(
     @Request() { user }: RequestWithUAT,
