@@ -244,7 +244,7 @@ export const recipeControllerSearch = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal
 ) => {
-  return customInstance<void>(
+  return customInstance<Recipe[]>(
     { url: `/api/recipe/search/${text}`, method: "get", signal },
     options
   );
