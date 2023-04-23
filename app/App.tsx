@@ -5,6 +5,7 @@ import { AppShell } from "./views/AppShell";
 import { NativeRouter, Route, Link, Routes } from "react-router-native";
 import { Feed } from "./views/Feed";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { User } from "./views/User";
 
 const queryClient = new QueryClient();
 
@@ -16,8 +17,8 @@ export default function App() {
         <NativeRouter>
           <Routes>
             <Route path="/login" Component={Login} />
-            <Route path="/register" Component={Register} />
             <Route path="/" Component={Login} />
+            <Route path="/register" Component={Register} />
             <Route path="/app/*" Component={AppShell} />
           </Routes>
         </NativeRouter>

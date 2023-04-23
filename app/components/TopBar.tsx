@@ -12,7 +12,10 @@ export const TopBar = () => {
   return (
     <View className="flex flex-row mt-6 p-6 justify-between  bg-white shadow-lg border-b-2 border-gray-200">
       {/* left */}
-      <Text className="font-bold text-md">{location}</Text>
+      {!location.includes("user") && (
+        <Text className="font-bold text-md">{location}</Text>
+      )}
+
       {/* right */}
       <Group>
         <TouchableOpacity onPress={() => navigate("/app/user")}>

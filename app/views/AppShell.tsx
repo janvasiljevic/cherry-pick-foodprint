@@ -6,6 +6,7 @@ import { Feed } from "./Feed";
 import { SearchView } from "./Search";
 import { AddView } from "./Add";
 import { Follow } from "./Follow";
+import { User } from "./User";
 
 export const AppShell = () => {
   // main app container. routes are defined here and rendered in the main container
@@ -23,6 +24,7 @@ export const AppShell = () => {
           <Route path="follow" Component={Follow} />
           <Route path="add" Component={AddView} />
           <Route path="search" Component={SearchView} />
+          <Route path="user/:userId" Component={User} />
 
           <Route path="*" Component={View} />
         </Routes>

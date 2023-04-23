@@ -30,7 +30,14 @@ export const Follow = () => {
     search: appliedSearch,
   });
 
-  const { mutate } = useUserControllerFollow();
+  const { mutate } = useUserControllerFollow({
+    mutation: {
+      onError: (error) => {
+        console.log(error.message);
+        console.log(error.response.data);
+      },
+    },
+  });
 
   return (
     <ScrollView>
@@ -68,36 +75,46 @@ export const Follow = () => {
             </View>
 
             {data?.map((user) => (
-              <TouchableOpacity
+              <View
+                className="border border-gray-300 px-4 py-1 my-2 rounded-md bg-white"
                 key={user.id}
-                onPress={() => {
-                  mutate(
-                    { id: user.id },
-                    {
-                      onSuccess: () => {
-                        console.log("success");
-                        alert("Followed user");
-                      },
-                      onError: () => {
-                        console.log("error");
-                      },
-                    }
-                  );
-                }}
               >
-                <View className="border border-gray-300 px-4 py-1 my-2 rounded-md bg-white">
-                  <Group>
-                    <Icon name={"user"} size={20} color="#cbd5e1" />
+                <Group position="apart">
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigate(`/app/user/${user.id}`);
+                    }}
+                  >
+                    <Group>
+                      <Icon name={"user"} size={20} color="#cbd5e1" />
 
-                    <Text className="p-2">{user.username}</Text>
-                    <Text className="p-2">{user.firstName}</Text>
-                    <Text className="p-2">{user.lastName}</Text>
+                      <Text className="p-2">{user.firstName}</Text>
+                      <Text className="p-2">{user.lastName}</Text>
+                    </Group>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      mutate(
+                        { id: user.id },
+                        {
+                          onSuccess: () => {
+                            console.log("success");
+                            alert("Followed user");
+                          },
+                          onError: () => {
+                            console.log("error");
+                          },
+                        }
+                      );
+                    }}
+                  >
                     <Text className="p-2 font-medium text-teal-500">
                       Follow user
                     </Text>
-                  </Group>
-                </View>
-              </TouchableOpacity>
+                  </TouchableOpacity>
+                </Group>
+              </View>
             ))}
           </View>
         )}

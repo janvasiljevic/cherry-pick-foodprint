@@ -21,7 +21,14 @@ export const AddView = () => {
 
   const [ingredients, setIngredients] = useState<ing[]>([]);
 
-  const { data, isLoading, mutate } = useRecipeControllerCreate();
+  const { data, isLoading, mutate } = useRecipeControllerCreate({
+    mutation: {
+      onError: (error) => {
+        console.log(error.message);
+        console.log(error.response.data);
+      },
+    },
+  });
 
   return (
     <ScrollView className="h-full p-4 ">
@@ -36,12 +43,13 @@ export const AddView = () => {
         }}
         onSubmit={(values) => {
           console.log(values);
+
           mutate({
             data: {
               image: "asdasd",
-              name: "values.name",
-              description: "values.description",
-              ingredients: [],
+              name: values.name,
+              description: values.description,
+              ingredients: ingredients,
             },
           });
         }}
@@ -89,12 +97,12 @@ export const AddView = () => {
                     .then((result) => {});
                 }}
               >
-                <View className="flex flex-row items-center justify-center bg-teal-400/25 mt-4 p-2 rounded-md ">
+                {/* <View className="flex flex-row items-center justify-center bg-teal-400/25 mt-4 p-2 rounded-md ">
                   <Text className="ml-2 mr-4 text-lg text-teal-600 ">
                     {image ? "Image selected" : "Select image"}
                   </Text>
                   <Icon name="plus-circle" size={20} color="#0d9488" />
-                </View>
+                </View> */}
               </TouchableOpacity>
             </View>
 
