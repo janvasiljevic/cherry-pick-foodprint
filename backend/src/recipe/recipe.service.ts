@@ -139,6 +139,8 @@ export class RecipeService {
 
     const arr = m.data.Get.Recipe.map((recipe) => recipe.url);
 
+    console.log(arr);
+
     const recipes = await this.recipeRepository.find(
       {
         $and: [

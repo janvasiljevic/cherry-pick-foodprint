@@ -150,6 +150,8 @@ export class DevService {
           result.map(async (row, i) => {
             if (i == 0) return;
 
+            console.log(row.image_url);
+
             this.em.create(
               Recipe,
               {
