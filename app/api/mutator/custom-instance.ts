@@ -31,6 +31,8 @@ AXIOS_INSTANCE.interceptors.request.use(
   async (config) => {
     const token = await SecureStore.getItemAsync("at");
 
+    console.log("hey");
+
     config.headers.Authorization = token ? `Bearer ${token}` : "";
 
     return config;
