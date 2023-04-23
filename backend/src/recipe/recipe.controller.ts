@@ -12,7 +12,7 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
-import { CreateRecipeDto } from './dto/create-recipe.dto';
+import { CreateIngridientDto, CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import {
   ApiBearerAuth,
@@ -36,25 +36,33 @@ export class RecipeController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new recipe - WIP' })
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: function (req, file, cb) {
-          cb(null, IMAGE_PATH);
-        },
-        filename: function (req, file, cb) {
-          cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
-        },
-      }),
-    }),
-  )
+
+  //     storage: diskStorage({
+  //       destination: function (req, file, cb) {
+  //         cb(null, IMAGE_PATH);
+  //       },
+  //       filename: function (req, file, cb) {
+  //         cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
+  //       },
+  //     }),
+  //   }),
+  // )
   @ApiConsumes('multipart/form-data')
   create(
     @Request() { user: at }: RequestWithUAT,
     @Body() createRecipeDto: CreateRecipeDto,
-    @UploadedFile() file: Express.Multer.File,
+    // @UploadedFile() file: Express.Multer.File,
   ) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore_
+    const ingr = createRecipeDto.ingredientIds as unkown as string;
+
+    const tmp: CreateIngridientDto[] = JSON.parse('[' + ingr + ']');
+
+    createRecipeDto.ingredientIds = tmp;
+
     console.log(createRecipeDto);
+
     return this.recipeService.create(createRecipeDto, at.userId, file.filename);
   }
 

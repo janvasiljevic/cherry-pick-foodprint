@@ -405,6 +405,48 @@
         ]
       }
     },
+    "/api/dev/seed1": {
+      "post": {
+        "operationId": "DevController_seed1",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "controller"
+        ]
+      }
+    },
+    "/api/dev/seed2": {
+      "post": {
+        "operationId": "DevController_seed2",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "controller"
+        ]
+      }
+    },
+    "/api/dev/seed3": {
+      "post": {
+        "operationId": "DevController_seed3",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "controller"
+        ]
+      }
+    },
     "/api/recipe": {
       "post": {
         "operationId": "RecipeController_create",

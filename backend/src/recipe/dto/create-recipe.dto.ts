@@ -20,12 +20,10 @@ export class CreateRecipeDto {
   @IsAlphanumeric()
   description: string;
 
-  @ApiProperty({ type: 'string', format: 'binary', required: true })
-  file: Express.Multer.File;
+  // @ApiProperty({ type: 'string', format: 'binary', required: true })
+  // file: Express.Multer.File;
 
-  @IsArray()
   @ApiProperty({ type: [CreateIngridientDto] })
   @Type(() => CreateIngridientDto)
-  @Transform(({ value }) => value.split(','))
   ingredientIds: CreateIngridientDto[];
 }
