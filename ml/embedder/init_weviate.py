@@ -59,55 +59,56 @@ class_obj = {
       "vectorizer": "text2vec-transformers"
 }
 
-# client.schema.create_class(class_obj)
+client.schema.create_class(class_obj)
 
 # create a schema for embedding source food items
 # food_group,food_item,co2_footprint_kg,co2_footprint_uncertainty,Water Footprint kg,water_footprint_uncertainty
-# cols= ['food_group','co2_footprint_kg','co2_footprint_uncertainty','Water Footprint kg','water_footprint_uncertainty']
 
-# def col2type(col):
-#     return {
-#           "dataType": [
-#             "text"
-#           ],
-#           "description": col.capitalize().replace("_"," "),
-#           "moduleConfig": {
-#             "text2vec-transformers": {
-#               "skip": True,
-#               "vectorizePropertyName": False
-#             }
-#           },
-#           "name": col.capitalize().replace("_"," ")
-#         }
+cols= ['food_group','co2_footprint_kg','co2_footprint_uncertainty','Water Footprint kg','water_footprint_uncertainty']
 
-# cols = [col2type(col) for col in cols]
+def col2type(col):
+    return {
+          "dataType": [
+            "text"
+          ],
+          "description": col.capitalize().replace("_"," "),
+          "moduleConfig": {
+            "text2vec-transformers": {
+              "skip": True,
+              "vectorizePropertyName": False
+            }
+          },
+          "name": col.capitalize().replace("_"," ")
+        }
+
+cols = [col2type(col) for col in cols]
     
-# class_obj = {
-#       "class": "SourceFood",
-#       "description": "Source food class for matching food items to computed food items",
-#       "moduleConfig": {
-#         "text2vec-transformers": {
-#           "poolingStrategy": "masked_mean",
-#           "vectorizeClassName": False
-#         }
-#       },
-#       "properties": [
-#         {
-#           "dataType": [
-#             "text"
-#           ],
-#           "description": "Food item",
-#           "moduleConfig": {
-#             "text2vec-transformers": {
-#               "skip": False,
-#               "vectorizePropertyName": False
-#             }
-#           },
-#           "name": "food_item"
-#         },
+class_obj = {
+      "class": "SourceFood",
+      "description": "Source food class for matching food items to computed food items",
+      "moduleConfig": {
+        "text2vec-transformers": {
+          "poolingStrategy": "masked_mean",
+          "vectorizeClassName": False
+        }
+      },
+      "properties": [
+        {
+          "dataType": [
+            "text"
+          ],
+          "description": "Food item",
+          "moduleConfig": {
+            "text2vec-transformers": {
+              "skip": False,
+              "vectorizePropertyName": False
+            }
+          },
+          "name": "food_item"
+        },
         
-#         *cols
-#       ],
-#       "vectorizer": "text2vec-transformers"
-# }
+        *cols
+      ],
+      "vectorizer": "text2vec-transformers"
+}
 

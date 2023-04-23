@@ -10,9 +10,10 @@ import type { Collection } from "./collection";
 import type { RecipeComments } from "./recipeComments";
 import type { RecipeFoodTagsItem } from "./recipeFoodTagsItem";
 import type { RecipeIngridients } from "./recipeIngridients";
+import type { RecipeServerSideProvided } from "./recipeServerSideProvided";
 
 export interface Recipe {
-  author: User;
+  author?: User;
   bookmarkedBy: Collection;
   calculate_carbon_footprint?: number;
   calculate_water_footprint?: number;
@@ -21,8 +22,10 @@ export interface Recipe {
   description: string;
   foodTags: RecipeFoodTagsItem[];
   id: string;
-  image_url: string;
+  image_url?: string;
   ingridients: RecipeIngridients;
+  link?: string;
   name: string;
+  serverSideProvided: RecipeServerSideProvided;
   updatedAt: string;
 }

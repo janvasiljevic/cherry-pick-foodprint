@@ -2,6 +2,15 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type, Transform } from 'class-transformer';
 import { IsAlphanumeric, IsArray, IsString, MinLength } from 'class-validator';
 import { Express } from 'express';
+
+export class CreateIngridientDto {
+  @ApiProperty()
+  @IsAlphanumeric()
+  name: string;
+
+  @ApiProperty()
+  weight: number;
+}
 export class CreateRecipeDto {
   @IsAlphanumeric()
   @MinLength(3)
@@ -14,13 +23,9 @@ export class CreateRecipeDto {
   @ApiProperty({ type: 'string', format: 'binary', required: true })
   file: Express.Multer.File;
 
-  @ApiProperty({
-    type: String,
-    isArray: true,
-  })
   @IsArray()
-  @IsString({ each: true })
-  @Type(() => String)
+  @ApiProperty({ type: [CreateIngridientDto] })
+  @Type(() => CreateIngridientDto)
   @Transform(({ value }) => value.split(','))
-  ingredientIds?: string[];
+  ingredientIds: CreateIngridientDto[];
 }

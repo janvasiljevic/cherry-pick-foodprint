@@ -1,5 +1,4 @@
 import weaviate as wv
-import numpy as np
 import pandas as pd
 
 data_file = "../scraped/recipes_list.csv"

@@ -12,7 +12,7 @@ import type {
   UseQueryResult,
   QueryKey,
 } from "@tanstack/react-query";
-import type { SourceControllerSearchParams } from ".././model";
+import type { Source, SourceControllerSearchParams } from ".././model";
 import { customInstance } from ".././mutator/custom-instance";
 import type { ErrorType } from ".././mutator/custom-instance";
 
@@ -32,7 +32,7 @@ export const sourceControllerSearch = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal
 ) => {
-  return customInstance<void>(
+  return customInstance<Source[]>(
     { url: `/api/source/search`, method: "get", params, signal },
     options
   );

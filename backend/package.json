@@ -48,7 +48,8 @@
     "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "weaviate-ts-client": "^1.1.0"
   },
   "mikro-orm": {
     "useTsNode": true,

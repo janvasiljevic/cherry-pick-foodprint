@@ -8,5 +8,6 @@ import { Source } from 'src/entities/Source.entity';
   imports: [MikroOrmModule.forFeature([Source])],
   providers: [SourceService],
   controllers: [SourceController],
+  exports: [SourceService],
 })
 export class SourceModule {}
