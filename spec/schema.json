@@ -710,7 +710,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "type": "object"
+                    "$ref": "#/components/schemas/Recipe"
                   },
                   "type": "array"
                 }

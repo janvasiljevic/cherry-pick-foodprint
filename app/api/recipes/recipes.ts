@@ -19,7 +19,6 @@ import type {
   CreateRecipeDto,
   RecipeControllerUnbookmark200,
   RecipeControllerBookmark201,
-  RecipeControllerTimeline200Item,
   RecipeControllerTimelineParams,
   UpdateRecipeDto,
 } from ".././model";
@@ -325,7 +324,7 @@ export const recipeControllerTimeline = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal
 ) => {
-  return customInstance<RecipeControllerTimeline200Item[]>(
+  return customInstance<Recipe[]>(
     { url: `/api/recipe/timeline`, method: "get", params, signal },
     options
   );

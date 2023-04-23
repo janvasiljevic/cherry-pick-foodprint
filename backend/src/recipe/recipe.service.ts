@@ -59,7 +59,7 @@ export class RecipeService {
     return recipe;
   }
 
-  async timeline(userId: string, timelineGet: TimelineGet) {
+  async timeline(userId: string, timelineGet: TimelineGet): Promise<Recipe[]> {
     const user = await this.userRepository.findOne(
       { id: userId },
       { populate: ['followers'] },
