@@ -10,11 +10,11 @@ import { useLocation, useNavigate } from "react-router-native";
 import { Group, Stack } from "./Util";
 
 export const Card = () => (
-  <View className="flex flex-col rounded-xl bg-white m-4 border-2 border-slate-100 ">
+  <View className="flex flex-col rounded-xl bg-white m-4 border-2 border-slate-200 ">
     {/* img */}
     <Image
       source={{ uri: "https://picsum.photos/seed/picsum/500/500" }}
-      className="w-full h-36 bg-red-300 bg-contain rounded-xl"
+      className="w-full h-36 bg-red-300 bg-contain rounded-lg"
     />
     <View className="flex flex-row justify-between">
       <View />
@@ -43,13 +43,13 @@ export const Card = () => (
       <TouchableOpacity>
         <View className=" px-4 py-2 flex  items-center">
           <Icon name="comment-alt" size={14} color="#cbd5e1" />
-          <Text className="text-gray-300 text-xs">comment</Text>
+          <Text className="text-gray-300 text-sm">comment</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
         <View className=" px-4 py-2 flex  items-center ">
           <Icon name="heart" size={14} color="#cbd5e1" />
-          <Text className="text-gray-300 text-xs">save</Text>
+          <Text className="text-gray-300 text-sm">save</Text>
         </View>
       </TouchableOpacity>
     </View>

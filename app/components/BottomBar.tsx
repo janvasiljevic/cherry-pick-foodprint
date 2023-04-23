@@ -44,11 +44,12 @@ export const BottomBar = () => {
   const navigate = useNavigate();
 
   return (
-    <View className="flex flex-row justify-evenly items-center bg-gray-50 shadow-lg p-2">
+    <View className="flex flex-row justify-evenly items-center bg-white shadow-lg p-2">
       {/* navigation buttons */}
       {/* <NavItem name="Profile" icon="user-alt" /> */}
-      <NavItem name="Food" icon="apple" />
+      <NavItem name="Food" icon="utensils" />
       <NavItem name="Search" icon="bolt" />
+      <NavItem name="Add" icon="plus-circle" />
       <NavItem name="Follow" icon="user-friends" />
     </View>
   );

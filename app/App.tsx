@@ -18,8 +18,6 @@ export default function App() {
           <Route path="/app/*" Component={AppShell} />
         </Routes>
       </NativeRouter>
-
-      {/* <Text className="w-full text-center">ojla</Text> */}
     </View>
   );
 }
