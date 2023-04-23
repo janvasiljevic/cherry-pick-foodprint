@@ -21,17 +21,7 @@ export const AddView = () => {
 
   const [ingredients, setIngredients] = useState<ing[]>([]);
 
-  const { data, isLoading, mutate } = useRecipeControllerCreate({
-    mutation: {
-      onError(error, variables, context) {
-        console.log(error.cause);
-        console.log(error.code);
-        console.log(error.response.data);
-        console.log(variables);
-        console.log(context);
-      },
-    },
-  });
+  const { data, isLoading, mutate } = useRecipeControllerCreate();
 
   return (
     <ScrollView className="h-full p-4 ">
@@ -40,19 +30,18 @@ export const AddView = () => {
       </Text>
       <Formik
         initialValues={{
-          description: "",
-          name: "",
+          description: "nekaj",
+          name: "nekaj",
           image: null,
         }}
         onSubmit={(values) => {
-          values.image = createFormData(image);
           console.log(values);
           mutate({
             data: {
-              file: null,
-              name: values.name,
-              description: values.description,
-              ingredients: ingredients,
+              image: "asdasd",
+              name: "values.name",
+              description: "values.description",
+              ingredients: [],
             },
           });
         }}
