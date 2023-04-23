@@ -106,7 +106,7 @@ export class RecipeService {
   }
 
   // TODO - SEARCH
-  search(text: string) {
+  async search(text: string): Promise<Recipe[]> {
     interface Pokedex {
       data: Data;
     }
@@ -116,26 +116,42 @@ export class RecipeService {
     }
 
     interface Get {
-      Recipe: Recipe[];
+      Recipe: Recipe2[];
     }
 
-    interface Recipe {
+    interface Recipe2 {
       description: string;
       name: string;
+      url: string;
     }
-    this.client.graphql
+    const m: Pokedex | void = await this.client.graphql
       .get()
       .withClassName('Recipe')
-      .withFields('name description')
+      .withFields('name description url')
       .withNearText({ concepts: [text] })
-      .withLimit(10)
+      .withLimit(30)
       .do()
-      .then((res: Pokedex) => {
-        console.log(res);
-      })
       .catch((err: Error) => {
         console.error(err);
       });
+
+    if (!m) throw new Error('No results found');
+
+    const arr = m.data.Get.Recipe.map((recipe) => recipe.url);
+
+    const recipes = await this.recipeRepository.find(
+      {
+        $and: [
+          { link: { $in: arr } },
+          { calculate_carbon_footprint: { $ne: 0 } },
+        ],
+      },
+      {
+        orderBy: { calculate_carbon_footprint: 'DESC' },
+      },
+    );
+
+    return recipes;
   }
 
   async findOne(id: string): Promise<Recipe> {
