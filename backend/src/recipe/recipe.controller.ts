@@ -63,7 +63,7 @@ export class RecipeController {
 
     console.log(createRecipeDto);
 
-    return this.recipeService.create(createRecipeDto, at.userId, file.filename);
+    return this.recipeService.create(createRecipeDto, at.userId);
   }
 
   @Get('timeline')

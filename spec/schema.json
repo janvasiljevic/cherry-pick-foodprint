@@ -26,10 +26,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "file": {
-            "format": "binary",
-            "type": "string"
-          },
           "ingredientIds": {
             "items": {
               "$ref": "#/components/schemas/CreateIngridientDto"
@@ -42,7 +38,6 @@
           }
         },
         "required": [
-          "file",
           "ingredientIds",
           "name",
           "description"
@@ -247,10 +242,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "file": {
-            "format": "binary",
-            "type": "string"
-          },
           "ingredientIds": {
             "items": {
               "$ref": "#/components/schemas/CreateIngridientDto"
@@ -453,7 +444,7 @@
         "parameters": [],
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateRecipeDto"
               }

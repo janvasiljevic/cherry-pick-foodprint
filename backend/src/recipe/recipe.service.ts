@@ -26,11 +26,7 @@ export class RecipeService {
     this.ingridientRepository = ingridientRepository;
   }
 
-  async create(
-    createRecipeDto: CreateRecipeDto,
-    userId: string,
-    fileName: string,
-  ) {
+  async create(createRecipeDto: CreateRecipeDto, userId: string) {
     const author = await this.userRepository.findOne({ id: userId });
 
     if (!author) throw new Error('User not found');
@@ -52,7 +48,7 @@ export class RecipeService {
       // ingridients,
       [],
       [], // tags
-      '/public/' + fileName,
+      '/public/',
     );
 
     await this.recipeRepository.persist(recipe).flush();
