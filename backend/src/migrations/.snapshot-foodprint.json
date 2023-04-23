@@ -414,7 +414,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "name": {
@@ -433,7 +433,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "0",
           "mappedType": "integer"
         },
         "source_id": {
@@ -489,6 +488,7 @@
             "id"
           ],
           "referencedTableName": "public.recipe",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "ingridient_source_id_foreign": {

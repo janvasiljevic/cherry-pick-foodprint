@@ -65,7 +65,9 @@ export class UserService {
   }
 
   findOne(id: string) {
-    const user = this.userRepository.findOne(id, { populate: ['recipes'] });
+    const user = this.userRepository.findOne(id, {
+      populate: ['recipes', 'recipes.ingridients'],
+    });
 
     if (!user) throw new NotFoundException("Couldn't find user");
 

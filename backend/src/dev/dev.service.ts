@@ -150,16 +150,21 @@ export class DevService {
           result.map(async (row, i) => {
             if (i == 0) return;
 
-            const r = new Recipe(row.name, row.description, null, [], [], null);
+            this.em.create(
+              Recipe,
+              {
+                name: row.name,
+                link: row.url,
+                description: row.description,
+                image_url: row.image_url,
+                serverSideProvided: true,
+              },
+              { persist: true },
+            );
 
-            r.serverSideProvided = true;
-            r.link = row.url;
-
-            return this.recipeRepository.persist(r);
+            await this.em.flush();
           }),
         );
-
-        await this.recipeRepository.flush();
       },
     );
 
@@ -172,10 +177,9 @@ export class DevService {
       __dirname,
       '../../../ml/scraped/recipes_list_processed.csv',
     );
-
     const fileContent3 = fs.readFileSync(csvFilePath3, { encoding: 'utf-8' });
 
-    await parse(
+    parse(
       fileContent3,
       {
         delimiter: ',',
@@ -190,7 +194,7 @@ export class DevService {
             { refresh: true, populate: ['ingridients'] },
           );
 
-          if (!recipe) return;
+          if (!recipe) continue;
 
           let number = 0;
 
@@ -206,18 +210,19 @@ export class DevService {
             }
           }
 
-          console.log(row.item, number, recipe);
+          const ingridient = this.em.create(
+            Ingridient,
+            {
+              name: row.item,
+              weight: number,
+              recipe: recipe,
+            },
+            { persist: true },
+          );
 
-          const ingridient = new Ingridient(row.item, number, recipe);
-          recipe.ingridients.add(ingridient);
+          await this.sourceService.matchIngridient(ingridient);
 
-          const a = await this.sourceService.matchIngridient(ingridient);
-
-          if (a) {
-            ingridient.calculated_carbon_footprint = a.co2;
-            ingridient.calculated_water_footprint = a.water;
-            ingridient.source = a.source;
-          }
+          await this.em.flush();
 
           await this.ingridientRepository.persistAndFlush(ingridient);
           await this.recipeRepository.persistAndFlush(recipe);

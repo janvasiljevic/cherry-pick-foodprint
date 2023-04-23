@@ -55,11 +55,13 @@ export class RecipeController {
   ) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore_
-    const ingr = createRecipeDto.ingredientIds as unkown as string;
+    // const ingr = createRecipeDto.ingredientIds as unkown as string;
 
-    const tmp: CreateIngridientDto[] = JSON.parse('[' + ingr + ']');
+    // const tmp: CreateIngridientDto[] = JSON.parse('[' + ingr + ']');
 
-    createRecipeDto.ingredientIds = tmp;
+    // createRecipeDto.ingredientIds = tmp;
+
+    // console.log(createRecipeDto);
 
     console.log(createRecipeDto);
 
